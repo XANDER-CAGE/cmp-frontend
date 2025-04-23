@@ -1,0 +1,95 @@
+{
+  "name": "cityfuel-frontend-v2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@amcharts/amcharts5": "^5.9.8",
+    "@amcharts/amcharts5-geodata": "^5.1.2",
+    "@ckeditor/ckeditor5-alignment": "^41.1.0",
+    "@ckeditor/ckeditor5-autoformat": "^41.1.0",
+    "@ckeditor/ckeditor5-basic-styles": "^41.1.0",
+    "@ckeditor/ckeditor5-block-quote": "^41.1.0",
+    "@ckeditor/ckeditor5-build-classic": "^41.1.0",
+    "@ckeditor/ckeditor5-editor-classic": "^41.1.0",
+    "@ckeditor/ckeditor5-essentials": "^41.1.0",
+    "@ckeditor/ckeditor5-font": "^41.1.0",
+    "@ckeditor/ckeditor5-heading": "^41.1.0",
+    "@ckeditor/ckeditor5-highlight": "^41.1.0",
+    "@ckeditor/ckeditor5-horizontal-line": "^41.1.0",
+    "@ckeditor/ckeditor5-html-support": "^41.1.0",
+    "@ckeditor/ckeditor5-image": "^41.1.0",
+    "@ckeditor/ckeditor5-indent": "^41.1.0",
+    "@ckeditor/ckeditor5-link": "^41.1.0",
+    "@ckeditor/ckeditor5-list": "^41.1.0",
+    "@ckeditor/ckeditor5-media-embed": "^41.1.0",
+    "@ckeditor/ckeditor5-paragraph": "^41.1.0",
+    "@ckeditor/ckeditor5-react": "^6.2.0",
+    "@ckeditor/ckeditor5-special-characters": "^41.1.0",
+    "@ckeditor/ckeditor5-table": "^41.1.0",
+    "@ckeditor/ckeditor5-typing": "^41.1.0",
+    "@ckeditor/ckeditor5-undo": "^41.1.0",
+    "@ckeditor/ckeditor5-upload": "^41.1.0",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@reduxjs/toolkit": "^2.1.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "ahooks": "^3.7.10",
+    "antd": "^5.13.3",
+    "apexcharts": "^3.49.0",
+    "axios": "^1.6.7",
+    "ckeditor5": "^41.1.0",
+    "ckeditor5-custom-build": "file:ckeditor5",
+    "clsx": "^2.1.0",
+    "dayjs": "^1.11.10",
+    "echarts-for-react": "^3.0.2",
+    "js-cookie": "^3.0.5",
+    "leaflet": "^1.9.4",
+    "lodash": "^4.17.21",
+    "query-string": "^9.0.0",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-dom": "^18.2.0",
+    "react-google-recaptcha": "^3.1.0",
+    "react-icons": "^5.0.1",
+    "react-leaflet": "^4.2.1",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.21.3",
+    "react-scripts": "5.0.1",
+    "react-table": "^7.8.0",
+    "react-toastify": "^10.0.4",
+    "react-window": "^1.8.10",
+    "redux": "^5.0.1",
+    "styled-components": "^6.1.8",
+    "uuid": "^9.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

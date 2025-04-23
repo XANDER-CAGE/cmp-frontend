@@ -1,0 +1,17 @@
+.admin-layout {
+    position: relative;
+}
+
+.admin-layout .pages-wrap {
+    position: absolute;
+    width: calc(100% - 340px);
+    left: 320px;
+    right: 20px;
+    top: 110px;
+    transition: 0.3s;
+}
+
+.admin-layout .pages-wrap.opened {
+    width: calc(100% - 120px);
+    left: 100px;
+}

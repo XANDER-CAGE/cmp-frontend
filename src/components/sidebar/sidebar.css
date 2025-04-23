@@ -1,0 +1,32 @@
+.sidebar-component {
+    width: 300px;
+    height: calc(100vh - 91px);
+    position: fixed;
+    top: 91px;
+    left: 0;
+    transition: 0.3s;
+    z-index: 2;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+.sidebar-component.collapsed {
+    width: 80px;
+}
+
+.sidebar-component .ant-menu-item-selected {
+    background-color: #5711a410;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.sidebar-component .ant-menu-submenu-arrow::after {
+    color: #000;
+}
+
+.sidebar-component .ant-menu-submenu-arrow::before {
+    color: #000;
+}
+
+.ant-menu-sub {
+    background-color: #fff !important;
+}
