@@ -1,32 +1,201 @@
 .sidebar-component {
-    width: 300px;
-    height: calc(100vh - 91px);
+    width: 260px;
+    height: calc(100vh - 90px);
     position: fixed;
-    top: 91px;
+    top: 90px;
     left: 0;
-    transition: 0.3s;
+    transition: all 0.3s ease;
     z-index: 2;
     overflow-y: auto;
-    background-color: #fff;
 }
 
 .sidebar-component.collapsed {
     width: 80px;
 }
 
-.sidebar-component .ant-menu-item-selected {
-    background-color: #5711a410;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+/* Sidebar scrollbar */
+.sidebar-component::-webkit-scrollbar {
+    width: 6px;
 }
 
-.sidebar-component .ant-menu-submenu-arrow::after {
-    color: #000;
+.sidebar-component::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.sidebar-component .ant-menu-submenu-arrow::before {
-    color: #000;
+.sidebar-component::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
-.ant-menu-sub {
-    background-color: #fff !important;
+.dark .sidebar-component::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* User profile section */
+.sidebar-profile {
+    padding: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.sidebar-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sidebar-avatar .status {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    border: 2px solid;
+    bottom: -2px;
+    right: -2px;
+}
+
+.light .sidebar-avatar .status {
+    border-color: #ffffff;
+}
+
+.dark .sidebar-avatar .status {
+    border-color: #1e293b;
+}
+
+.sidebar-user-info {
+    margin-left: 15px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar-username {
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sidebar-role {
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 0;
+}
+
+/* Light theme styles */
+.light {
+    background-color: #ffffff;
+    color: #1e293b;
+}
+
+.light .sidebar-avatar {
+    background-color: #f1f5f9;
+    border: 2px solid #e2e8f0;
+}
+
+/* Dark theme styles */
+.dark {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.dark .sidebar-avatar {
+    background-color: #334155;
+    border: 2px solid #475569;
+}
+
+/* Ant Design Menu Overrides */
+.sidebar-component .ant-menu {
+    background-color: transparent;
+}
+
+.sidebar-component .ant-menu-item:hover,
+.sidebar-component .ant-menu-submenu-title:hover {
+    color: var(--main-color) !important;
+}
+
+.light .sidebar-component .ant-menu-item-selected {
+    background-color: rgba(87, 17, 164, 0.1);
+    color: var(--main-color) !important;
+    font-weight: 600;
+}
+
+.dark .sidebar-component .ant-menu-item-selected {
+    background-color: rgba(139, 92, 246, 0.2);
+    color: #a78bfa !important;
+    font-weight: 600;
+}
+
+.sidebar-component .ant-menu-item-selected::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background-color: #5711a4;
+}
+
+.dark .sidebar-component .ant-menu-item-selected::before {
+    background-color: #a78bfa;
+}
+
+.sidebar-component .ant-menu-submenu-title {
+    font-weight: 500;
+}
+
+.sidebar-component .ant-menu-sub {
+    background-color: transparent !important;
+}
+
+.sidebar-component .ant-menu-item {
+    border-radius: 8px;
+    margin: 5px 0;
+}
+
+.sidebar-component .ant-menu-submenu-arrow {
+    color: inherit;
+    transition: transform 0.3s;
+}
+
+.sidebar-component .ant-menu-submenu-open > .ant-menu-submenu-title > .ant-menu-submenu-arrow {
+    transform: rotate(180deg);
+}
+
+/* For dark theme menu arrow */
+.dark .sidebar-component .ant-menu-submenu-arrow::before,
+.dark .sidebar-component .ant-menu-submenu-arrow::after {
+    background-color: #cbd5e1 !important;
+}
+
+.dark .sidebar-component .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::before,
+.dark .sidebar-component .ant-menu-submenu-title:hover .ant-menu-submenu-arrow::after {
+    background-color: #f8fafc !important;
+}
+
+/* Style for svg icons inside menu */
+.sidebar-component .ant-menu-item .anticon,
+.sidebar-component .ant-menu-submenu-title .anticon {
+    min-width: 20px;
+    font-size: 18px;
+}
+
+/* Fix link colors in menu items */
+.dark .sidebar-component a {
+    color: #f8fafc;
+}
+
+.light .sidebar-component a {
+    color: #1e293b;
+}
+
+/* Menu item padding adjustment */
+.sidebar-component.collapsed .ant-menu-item {
+    padding: 0 calc(50% - 16px / 2) !important;
 }

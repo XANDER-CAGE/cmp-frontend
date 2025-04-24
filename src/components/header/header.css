@@ -3,66 +3,315 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 90px;
+    height: 70px;
     z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.header-top {
-    height: 48px;
+.header-wrapper {
+    height: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    /* background-color: var(--main-color); */
+    padding: 0 20px;
 }
 
-.header-top .logo {
-    font-size: 28px;
+.header-logo {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.header-logo .logo-text {
+    font-size: 24px;
     font-weight: 700;
-    color: #fff;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
 }
 
-.header-top .right-side {
+.header-controls {
     display: flex;
     align-items: center;
-    justify-content: center;
+    margin-left: auto;
+    height: 100%;
 }
 
-.header-top .user-wrap {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 2px solid #fff;
+.header-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-left: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.header-icon svg {
+    width: 22px;
+    height: 22px;
+    transition: all 0.2s ease;
+}
+
+.dark .header-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-user {
+    margin-left: 20px;
     position: relative;
-}
-
-.header-top .user-wrap .circle {
-    position: absolute;
-    border: 1px solid transparent;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    background-color: rgb(65, 184, 41);
-    right: -1px;
-    bottom: -1px;
-}
-
-.header-top svg {
-    fill: #fff;
-}
-
-.header-bottom {
-    height: 42px;
-    padding: 10px 20px;
-    box-shadow: 0px 20px 20px rgba(126, 142, 177, 0.12);
+    cursor: pointer;
     display: flex;
     align-items: center;
 }
 
-.header-component .ant-switch-checked {
-    background-color: #00000060 !important;
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.user-avatar:hover {
+    transform: scale(1.05);
+}
+
+.user-avatar .status {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    bottom: -1px;
+    right: -1px;
+}
+
+.dark .user-avatar .status {
+    border-color: #1e293b;
+}
+
+.theme-switch {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    width: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: all 0.2s ease;
+}
+
+.menu-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: capitalize;
+    margin-left: 10px;
+    letter-spacing: 0.5px;
+}
+
+/* Light theme styles */
+.light {
+    background-color: #ffffff;
+    color: #1e293b;
+}
+
+.light .header-logo .logo-text {
+    color: #5711a4;
+}
+
+.light .header-icon svg,
+.light .menu-toggle svg {
+    color: #64748b;
+}
+
+.light .header-icon:hover svg,
+.light .menu-toggle:hover svg {
+    color: #1e293b;
+}
+
+.light .user-avatar {
+    background-color: #f1f5f9;
+    border: 2px solid #e2e8f0;
+}
+
+/* Dark theme styles */
+.dark {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+.dark .header-logo .logo-text {
+    color: #a78bfa;
+}
+
+.dark .header-icon svg,
+.dark .menu-toggle svg {
+    color: #cbd5e1;
+}
+
+.dark .header-icon:hover svg,
+.dark .menu-toggle:hover svg {
+    color: #f8fafc;
+}
+
+.dark .user-avatar {
+    background-color: #334155;
+    border: 2px solid #475569;
+}
+
+/* Custom switch styles */
+.custom-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.custom-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e2e8f0;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #8b5cf6;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #8b5cf6;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    min-width: 240px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dark .dropdown-menu {
+    background: #334155;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-header {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.dark .dropdown-header {
+    border-bottom: 1px solid #475569;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f5f9;
+}
+
+.dark .dropdown-item:hover {
+    background-color: #475569;
+}
+
+.dropdown-item svg {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+}
+
+.light .dropdown-item svg {
+    color: #64748b;
+}
+
+.dark .dropdown-item svg {
+    color: #cbd5e1;
+}
+
+.dropdown-header .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-header .user-info .user-details {
+    margin-left: 12px;
+}
+
+.dropdown-header .user-info .user-name {
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0;
+}
+
+.dropdown-header .user-info .user-email {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}
+
+.dark .dropdown-header .user-info .user-email {
+    color: #cbd5e1;
 }

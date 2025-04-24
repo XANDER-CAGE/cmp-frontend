@@ -1,99 +1,130 @@
-@keyframes ldio-g99490y5a2g {
-  0% {
-    opacity: 1;
-    backface-visibility: hidden;
-    transform: translateZ(0) scale(1.5,1.5);
-  } 100% {
-    opacity: 0;
-    backface-visibility: hidden;
-    transform: translateZ(0) scale(1,1);
-  }
+.modern-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  text-align: center;
+  width: 100%;
+  transition: all 0.3s ease;
 }
-.ldio-g99490y5a2g div > div {
-  position: absolute;
-  width: 24px;
-  height: 24px;
+
+.modern-loader .ant-spin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-text {
+  margin-top: 8px !important;
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Animated dots for additional visual feedback */
+.loader-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  height: 10px;
+}
+
+.loader-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: #5714a7;
-  animation: ldio-g99490y5a2g 1s linear infinite;
-}.ldio-g99490y5a2g div:nth-child(1) > div {
-  left: 148px;
-  top: 88px;
-  animation-delay: -0.875s;
+  margin: 0 3px;
+  background-color: #4f46e5;
+  opacity: 0;
+  animation: dotPulse 1.4s infinite ease-in-out;
 }
-.ldio-g99490y5a2g > div:nth-child(1) {
-  transform: rotate(0deg);
-  transform-origin: 160px 100px;
-}.ldio-g99490y5a2g div:nth-child(2) > div {
-  left: 130px;
-  top: 130px;
-  animation-delay: -0.75s;
+
+.modern-loader.dark .loader-dots span {
+  background-color: #6366f1;
 }
-.ldio-g99490y5a2g > div:nth-child(2) {
-  transform: rotate(45deg);
-  transform-origin: 142px 142px;
-}.ldio-g99490y5a2g div:nth-child(3) > div {
-  left: 88px;
-  top: 148px;
-  animation-delay: -0.625s;
-}
-.ldio-g99490y5a2g > div:nth-child(3) {
-  transform: rotate(90deg);
-  transform-origin: 100px 160px;
-}.ldio-g99490y5a2g div:nth-child(4) > div {
-  left: 46px;
-  top: 130px;
-  animation-delay: -0.5s;
-}
-.ldio-g99490y5a2g > div:nth-child(4) {
-  transform: rotate(135deg);
-  transform-origin: 58px 142px;
-}.ldio-g99490y5a2g div:nth-child(5) > div {
-  left: 28px;
-  top: 88px;
-  animation-delay: -0.375s;
-}
-.ldio-g99490y5a2g > div:nth-child(5) {
-  transform: rotate(180deg);
-  transform-origin: 40px 100px;
-}.ldio-g99490y5a2g div:nth-child(6) > div {
-  left: 46px;
-  top: 46px;
-  animation-delay: -0.25s;
-}
-.ldio-g99490y5a2g > div:nth-child(6) {
-  transform: rotate(225deg);
-  transform-origin: 58px 58px;
-}.ldio-g99490y5a2g div:nth-child(7) > div {
-  left: 88px;
-  top: 28px;
-  animation-delay: -0.125s;
-}
-.ldio-g99490y5a2g > div:nth-child(7) {
-  transform: rotate(270deg);
-  transform-origin: 100px 40px;
-}.ldio-g99490y5a2g div:nth-child(8) > div {
-  left: 130px;
-  top: 46px;
+
+.loader-dots span:nth-child(1) {
   animation-delay: 0s;
 }
-.ldio-g99490y5a2g > div:nth-child(8) {
-  transform: rotate(315deg);
-  transform-origin: 142px 58px;
+
+.loader-dots span:nth-child(2) {
+  animation-delay: 0.2s;
 }
-.loadingio-spinner-spin-ic2xgbrkfn {
-  width: 200px;
-  height: 200px;
-  display: inline-block;
-  overflow: hidden;
-  background: rgba(NaN, NaN, NaN, 0);
+
+.loader-dots span:nth-child(3) {
+  animation-delay: 0.4s;
 }
-.ldio-g99490y5a2g {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform: translateZ(0) scale(1);
-  backface-visibility: hidden;
-  transform-origin: 0 0; /* see note above */
+
+@keyframes dotPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
 }
-.ldio-g99490y5a2g div { box-sizing: content-box; }
+
+/* Size variations */
+.modern-loader.small .ant-spin {
+  margin-bottom: 4px;
+}
+
+.modern-loader.small .loader-text {
+  font-size: 12px;
+}
+
+.modern-loader.small .loader-dots span {
+  width: 4px;
+  height: 4px;
+  margin: 0 2px;
+}
+
+.modern-loader.large .ant-spin {
+  margin-bottom: 12px;
+}
+
+.modern-loader.large .loader-text {
+  font-size: 16px;
+}
+
+.modern-loader.large .loader-dots span {
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+}
+
+/* Pulse animation for the spinner */
+.modern-loader .anticon-loading {
+  animation: spinnerPulse 2s infinite;
+}
+
+@keyframes spinnerPulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.97) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(0.97) rotate(360deg);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .modern-loader {
+    padding: 12px;
+  }
+}

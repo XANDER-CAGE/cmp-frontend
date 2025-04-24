@@ -5,7 +5,7 @@
 
 // export const BASE_URL = "http://192.166.230.47/"
 
-export const BASE_URL = "http://localhost:60000/"
+export const BASE_URL = "http://34.162.224.37:60000/"
 
 export const APP_SERIAL = "KSemSxAaEaqNOASFyNypNgu4BbbaBJIbzHoMztTAIexyhQZuSL"
 // export const captchaSiteKey = "6LeOlAgqAAAAAKxAKcJIAXMGhP_hDNJG5VD9WWJq"

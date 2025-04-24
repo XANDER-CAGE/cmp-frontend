@@ -1,17 +1,129 @@
-.admin-layout {
-    position: relative;
+/* Основной контейнер */
+.admin-layout-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease;
 }
 
-.admin-layout .pages-wrap {
-    position: absolute;
-    width: calc(100% - 340px);
-    left: 320px;
-    right: 20px;
-    top: 110px;
-    transition: 0.3s;
+/* Настройка основного содержимого (боковая панель + контент) */
+.admin-layout-main {
+  display: flex;
+  min-height: calc(100vh - 112px);
+  margin-top: 112px; /* Высота заголовка - header-top + header-bottom */
+  width: 100%;
+  transition: all 0.3s ease;
 }
 
-.admin-layout .pages-wrap.opened {
-    width: calc(100% - 120px);
-    left: 100px;
+/* Зона контента, адаптируется при сворачивании боковой панели */
+.content-area {
+  flex: 1;
+  margin-left: 300px; /* Ширина боковой панели в развернутом виде */
+  padding: 24px;
+  transition: all 0.3s ease;
+  min-height: calc(100vh - 112px);
+  width: calc(100% - 300px);
+  overflow-x: hidden;
+}
+
+/* Состояние контента при свернутой боковой панели */
+.content-area.content-expanded {
+  margin-left: 80px; /* Ширина свернутой боковой панели */
+  width: calc(100% - 80px);
+}
+
+/* Стилизация карточек в контенте */
+.content-area .box {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+/* Эффект при наведении на карточки */
+.content-area .box:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Стили для темной темы */
+.dark-theme .admin-layout-container {
+  background-color: #1f2937;
+}
+
+.dark-theme .content-area .box {
+  background-color: #1f2937;
+  border-color: #374151;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .content-area .box:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .content-area {
+    margin-left: 0;
+    width: 100%;
+    padding: 16px;
+  }
+  
+  .content-area.content-expanded {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .admin-layout-main {
+    flex-direction: column;
+  }
+  
+  .sidebar-component {
+    width: 100% !important;
+    height: auto !important;
+    position: static !important;
+    margin-top: 112px;
+  }
+  
+  .sidebar-component.collapsed {
+    display: none;
+  }
+}
+
+/* Улучшенные стили для прокрутки */
+.content-area::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.dark-theme .content-area::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.content-area::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-theme .content-area::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Анимации для улучшения UX */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-area > * {
+  animation: fadeIn 0.3s ease-out forwards;
 }

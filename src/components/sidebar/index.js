@@ -1,26 +1,47 @@
-import React, { useContext, useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Menu } from 'antd'
-import { useDispatch } from 'react-redux'
-import { userLogout } from '../../reducers/authSlice'
-import { MdManageAccounts, MdSpaceDashboard, MdLogout, MdIntegrationInstructions } from "react-icons/md"
-import { RiCustomerService2Fill, RiGasStationFill } from "react-icons/ri"
-import { FaSackDollar } from "react-icons/fa6"
-import { IoSettings } from "react-icons/io5"
-import './sidebar.css'
-import { ThemeContext } from '../../App'
+import React, { useContext, useState, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu } from 'antd';
+import { useDispatch } from 'react-redux';
+import { userLogout } from '../../reducers/authSlice';
+import { MdManageAccounts, MdSpaceDashboard, MdLogout, MdIntegrationInstructions, MdKeyboardArrowDown } from "react-icons/md";
+import { RiCustomerService2Fill, RiGasStationFill } from "react-icons/ri";
+import { FaSackDollar } from "react-icons/fa6";
+import { FiUser } from "react-icons/fi";
+import { IoSettings } from "react-icons/io5";
+import './sidebar.css';
+import { ThemeContext } from '../../App';
 import { useUserInfo } from '../../contexts/UserInfoContext';
 import Authorize from '../../utils/Authorize';
 import { PERMISSIONS } from '../../constants';
 
 const Sidebar = (props) => {
-    const { collapsed } = props
-    const { theme } = useContext(ThemeContext)
-    const { permissions } = useUserInfo()
-
-    const dispatch = useDispatch()
-    const location = useLocation()
-    const pathname = location.pathname.split('/')[1]
+    const { collapsed, setCollapsed } = props;
+    const { theme } = useContext(ThemeContext);
+    const { permissions, userInfo } = useUserInfo();
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const pathname = location.pathname.split('/')[1];
+    
+    // State to track expanded menu items
+    const [expandedMenus, setExpandedMenus] = useState({
+        dashboard: false,
+        user_management: false,
+        customer_service: false,
+        station_management: false,
+        accounting: false,
+        settings: false,
+        integrations: false
+    });
+    
+    // Toggle expanded state for a menu
+    const toggleMenu = (menuKey) => {
+        if (!collapsed) {
+            setExpandedMenus({
+                ...expandedMenus,
+                [menuKey]: !expandedMenus[menuKey]
+            });
+        }
+    };
 
     function getItem(label, key, icon, children, type) {
         return {
@@ -29,7 +50,7 @@ const Sidebar = (props) => {
             children,
             label,
             type,
-        }
+        };
     }
 
     const items = useMemo(() => [
@@ -74,11 +95,8 @@ const Sidebar = (props) => {
 
         Authorize(permissions, [
           PERMISSIONS.USERS.VIEW,
-
           PERMISSIONS.ROLES.VIEW,
-
           PERMISSIONS.DEPARTMENTS.VIEW,
-
           PERMISSIONS.POSITIONS.VIEW,
         ], false) &&
         getItem(
@@ -86,7 +104,6 @@ const Sidebar = (props) => {
             'user_management',
             <MdManageAccounts size={20} />,
             [
-
                 Authorize(permissions, [PERMISSIONS.USERS.VIEW]) &&
                 getItem(
                   <Link to="/users">
@@ -94,7 +111,6 @@ const Sidebar = (props) => {
                   </Link>,
                   'users',
                 ),
-
                 Authorize(permissions, [PERMISSIONS.ROLES.VIEW]) &&
                 getItem(
                     <Link to='/roles'>
@@ -102,7 +118,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'roles'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.DEPARTMENTS.VIEW]) &&
                 getItem(
                     <Link to='/departments'>
@@ -110,8 +125,7 @@ const Sidebar = (props) => {
                     </Link>,
                     'departments'
                 ),
-
-              Authorize(permissions, [PERMISSIONS.POSITIONS.VIEW]) &&
+                Authorize(permissions, [PERMISSIONS.POSITIONS.VIEW]) &&
                 getItem(
                     <Link to='/positions'>
                         <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Positions</div>
@@ -141,7 +155,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'companies'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.COMPANY_ACCOUNTS.VIEW]) &&
                 getItem(
                     <Link to='/company-accounts'>
@@ -149,7 +162,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'company-accounts'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.COMPANY_ACCOUNT_CARDS.VIEW]) &&
                 getItem(
                     <Link to='/company-account-cards'>
@@ -157,7 +169,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'company-account-cards'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.BANK_ACCOUNTS.VIEW]) &&
                 getItem(
                     <Link to='/bank-accounts'>
@@ -165,7 +176,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'bank-accounts'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.BANK_CARDS.VIEW]) &&
                 getItem(
                     <Link to='/bank-cards'>
@@ -173,7 +183,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'bank-cards'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.EFS_CARDS.VIEW]) &&
                 getItem(
                     <Link to='/efs-cards'>
@@ -193,7 +202,6 @@ const Sidebar = (props) => {
             'station_management',
             <RiGasStationFill size={20} />,
             [
-
                 Authorize(permissions, [PERMISSIONS.STATION_CHAINS.VIEW]) &&
                 getItem(
                     <Link to='/station-chains'>
@@ -201,7 +209,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'station-chains'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.STATIONS.VIEW]) &&
                 getItem(
                     <Link to='/stations'>
@@ -214,40 +221,29 @@ const Sidebar = (props) => {
 
         Authorize(permissions, [
             PERMISSIONS.EFS_TRANSACTIONS.VIEW,
-
             PERMISSIONS.EFS_MONEY_CODES.VIEW,
-
             PERMISSIONS.STATION_DISCOUNTS.VIEW,
             PERMISSIONS.STATION_DISCOUNTS.CREATE,
             PERMISSIONS.STATION_DISCOUNTS.EDIT,
             PERMISSIONS.STATION_DISCOUNTS.DELETE,
-
             PERMISSIONS.DAILY_UP_TO_DISCOUNTS.VIEW,
             PERMISSIONS.DAILY_UP_TO_DISCOUNTS.CREATE,
             PERMISSIONS.DAILY_UP_TO_DISCOUNTS.EDIT,
             PERMISSIONS.DAILY_UP_TO_DISCOUNTS.DELETE,
-
             PERMISSIONS.COMPANY_DISCOUNTS.VIEW,
             PERMISSIONS.COMPANY_DISCOUNTS.CREATE,
             PERMISSIONS.COMPANY_DISCOUNTS.EDIT,
             PERMISSIONS.COMPANY_DISCOUNTS.DELETE,
-
             PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.VIEW,
             PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.CREATE,
             PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.EDIT,
             PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.DELETE,
-
             PERMISSIONS.INVOICE.VIEW,
-
             PERMISSIONS.INVOICE_PAYMENTS.VIEW,
-
             PERMISSIONS.MAINTENANCES.VIEW,
-
             PERMISSIONS.MONEY_CODE_FEES.VIEW,
-
             PERMISSIONS.EFS_MONEY_CODES.VIEW,
             PERMISSIONS.EFS_MONEY_CODES.CREATE
-
         ], false) &&
         getItem(
             'Accounting',
@@ -261,7 +257,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'efs-transactions'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.EFS_MONEY_CODES.VIEW]) &&
                 getItem(
                     <Link to='/efs-money-codes'>
@@ -269,23 +264,19 @@ const Sidebar = (props) => {
                     </Link>,
                     'efs-money-codes'
                 ),
-
                 Authorize(permissions, [
                   PERMISSIONS.STATION_DISCOUNTS.VIEW,
                   PERMISSIONS.STATION_DISCOUNTS.CREATE,
                   PERMISSIONS.STATION_DISCOUNTS.EDIT,
                   PERMISSIONS.STATION_DISCOUNTS.DELETE,
-
                   PERMISSIONS.DAILY_UP_TO_DISCOUNTS.VIEW,
                   PERMISSIONS.DAILY_UP_TO_DISCOUNTS.CREATE,
                   PERMISSIONS.DAILY_UP_TO_DISCOUNTS.EDIT,
                   PERMISSIONS.DAILY_UP_TO_DISCOUNTS.DELETE,
-
                   PERMISSIONS.COMPANY_DISCOUNTS.VIEW,
                   PERMISSIONS.COMPANY_DISCOUNTS.CREATE,
                   PERMISSIONS.COMPANY_DISCOUNTS.EDIT,
                   PERMISSIONS.COMPANY_DISCOUNTS.DELETE,
-
                   PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.VIEW,
                   PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.CREATE,
                   PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.EDIT,
@@ -297,7 +288,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'discount-management'
                 ),
-
                 Authorize(permissions, [
                   PERMISSIONS.STATION_DISCOUNTS.VIEW,
                   PERMISSIONS.STATION_CHAIN_COMPANY_DISCOUNTS.VIEW,
@@ -310,7 +300,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'discount-management-view'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.INVOICE.VIEW]) &&
                 getItem(
                     <Link to='/invoicing'>
@@ -318,7 +307,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'invoicing'
                 ),
-
                 Authorize(permissions, [
                   PERMISSIONS.INVOICE.VIEW,
                 ], true) &&
@@ -328,45 +316,45 @@ const Sidebar = (props) => {
                     </Link>,
                     'invoice-groups'
                 ),
-
                 Authorize(permissions, [
                   PERMISSIONS.INVOICE_PAYMENTS.VIEW,
                 ], false) &&
                 getItem(
-                    <Link to='/payment-list'><div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Payment List</div>
+                    <Link to='/payment-list'>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Payment List</div>
                     </Link>,
                     'payment-list'
                 ),
-
                 Authorize(permissions, [
                   PERMISSIONS.INVOICE.VIEW,
                 ], false) &&
                 getItem(
-                    <Link to='/debtors'><div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Debtors</div>
+                    <Link to='/debtors'>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Debtors</div>
                     </Link>,
                     'debtors'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.MONEY_CODE_FEES.VIEW]) &&
                 getItem(
-                    <Link to='/money-code-fee'><div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Money Code Fee</div>
+                    <Link to='/money-code-fee'>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Money Code Fee</div>
                     </Link>,
                     'money-code-fee'
                 ),
-
                 Authorize(permissions, [
                   PERMISSIONS.EFS_MONEY_CODES.VIEW,
                   PERMISSIONS.EFS_MONEY_CODES.CREATE,
                 ], false) &&
                 getItem(
-                    <Link to='/money-code-remaining'><div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Money Code Remaining</div>
+                    <Link to='/money-code-remaining'>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Money Code Remaining</div>
                     </Link>,
                     'money-code-remaining'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.MAINTENANCES.VIEW,], false) &&
                 getItem(
-                    <Link to='/maintenances'><div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Maintenance Requests</div>
+                    <Link to='/maintenances'>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Maintenance Requests</div>
                     </Link>,
                     '/maintenances'
                 ),
@@ -393,7 +381,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'organizations'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.EFS_ACCOUNTS.VIEW]) &&
                 getItem(
                     <Link to='/efs-accounts'>
@@ -401,7 +388,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'efs-accounts'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.FUEL_TYPES.VIEW]) &&
                 getItem(
                     <Link to='/fuel-types'>
@@ -409,7 +395,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'fuel-types'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.AGENTS.VIEW]) &&
                 getItem(
                     <Link to='/agents'>
@@ -417,7 +402,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'agents'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.EMAIL_TEMPLATES.VIEW]) &&
                 getItem(
                     <Link to='/email-templates'>
@@ -432,7 +416,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'email-history'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.MERCHANT_FEES.VIEW]) &&
                 getItem(
                     <Link to='/merchant-fee'>
@@ -452,7 +435,6 @@ const Sidebar = (props) => {
             'integrations',
             <MdIntegrationInstructions size={20} />,
             [
-
                 Authorize(permissions, [PERMISSIONS.EFS.VIEW_LOGS]) &&
                 getItem(
                     <Link to='/efs'>
@@ -460,7 +442,6 @@ const Sidebar = (props) => {
                     </Link>,
                     'efs'
                 ),
-
                 Authorize(permissions, [PERMISSIONS.FORMSITE.VIEW_LOGS]) &&
                 getItem(
                     <Link to='/formsite'>
@@ -475,23 +456,44 @@ const Sidebar = (props) => {
             'logout',
             <MdLogout size={20} />
         ),
-
-        // eslint-disable-next-line
-    ], [permissions]
-    )
+    ], [permissions, theme, collapsed, dispatch]);
 
     return (
-        <div className={collapsed ? 'sidebar-component collapsed' : 'sidebar-component'}>
+        <div className={`sidebar-component ${collapsed ? 'collapsed' : ''} ${theme ? 'dark' : 'light'}`}>
+            {/* User profile section */}
+            {!collapsed && (
+                <div className="sidebar-profile">
+                    <div className="sidebar-avatar">
+                        {userInfo?.avatar ? (
+                            <img src={userInfo.avatar} alt={userInfo?.name} />
+                        ) : (
+                            <FiUser size={24} />
+                        )}
+                        <div className="status"></div>
+                    </div>
+                    <div className="sidebar-user-info">
+                        <h3 className="sidebar-username">{userInfo?.name} {userInfo?.surname}</h3>
+                        <p className="sidebar-role">{userInfo?.username}</p>
+                    </div>
+                </div>
+            )}
+            
+            {/* Menu items */}
             <Menu
                 defaultSelectedKeys={[`${pathname}`]}
                 mode="inline"
                 inlineCollapsed={collapsed}
                 items={items}
                 theme={theme ? 'dark' : 'light'}
-                style={{ padding: '10px', height: '100%', overflow: 'auto' }}
+                style={{ 
+                    padding: '10px', 
+                    height: collapsed || !userInfo ? '100%' : 'calc(100% - 80px)', 
+                    overflow: 'auto',
+                    border: 'none'
+                }}
             />
         </div>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;
