@@ -3,8 +3,10 @@ import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccount, deleteLoading, openModal) => [
+export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccount, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -19,7 +21,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         checked: true,
     },
     {
-        title: `Organization`,
+        title: t(translations, 'organization', language),
         dataIndex: 'organization',
         key: 'organization',
         type: 'string',
@@ -29,7 +31,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         render: (row) => row?.name
     },
     {
-        title: `EFS Account`,
+        title: t(translations, 'efsAccount', language),
         dataIndex: 'efsAccount',
         key: 'efsAccount',
         type: 'string',
@@ -39,7 +41,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         render: (row) => row?.name
     },
     {
-        title: `Company`,
+        title: t(translations, 'company', language),
         dataIndex: 'company',
         key: 'company',
         type: 'string',
@@ -53,7 +55,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         }
     },
     {
-        title: `Billing Cycle`,
+        title: t(translations, 'billingCycle', language),
         dataIndex: 'billingCycle',
         key: 'billingCycle',
         align: 'center',
@@ -61,17 +63,22 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         checked: true,
     },
     {
-        title: `Company Status`,
+        title: t(translations, 'companyStatus', language),
         dataIndex: 'company',
         key: 'companyStatus',
         type: 'string',
         align: 'center',
         width: 150,
         checked: true,
-        render: (row) => row?.companyStatus
+        render: (row) => {
+            const status = row?.companyStatus;
+            if (status === 'Active') return t(translations, 'statusActive', language);
+            if (status === 'Inactive') return t(translations, 'statusInactive', language);
+            return status;
+        }
     },
     {
-        title: `Fees Type`,
+        title: t(translations, 'feesType', language),
         dataIndex: 'feesType',
         key: 'feesType',
         type: 'string',
@@ -80,7 +87,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         checked: true,
     },
     {
-        title: `Discount`,
+        title: t(translations, 'discount', language),
         dataIndex: 'discount',
         key: 'discount',
         type: 'string',
@@ -89,7 +96,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         checked: true,
     },
     {
-        title: `Pricing Model`,
+        title: t(translations, 'pricingModel', language),
         dataIndex: 'pricingModel',
         key: 'pricingModel',
         type: 'string',
@@ -98,7 +105,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         checked: true,
     },
     {
-        title: `Billing Type`,
+        title: t(translations, 'billingType', language),
         dataIndex: 'billingType',
         key: 'billingType',
         type: 'string',
@@ -107,7 +114,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         checked: true,
     },
     {
-        title: `Notes`,
+        title: t(translations, 'notes', language),
         dataIndex: 'notes',
         key: 'notes',
         type: 'string',
@@ -116,7 +123,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         checked: true,
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -125,7 +132,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         render: (date) => <>{setTashkentTime(date)}</>
     },
     {
-        title: `Updated At`,
+        title: t(translations, 'updatedAt', language),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         align: 'center',
@@ -134,7 +141,7 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
         render: (date) => <>{date ? setTashkentTime(date) : null}</>
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -145,10 +152,10 @@ export const companyAccountsColumns = (pageNumber, pageSize, deleteCompanyAccoun
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteCompanyAccount(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

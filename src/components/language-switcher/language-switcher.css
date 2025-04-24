@@ -1,0 +1,76 @@
+/* src/components/language-switcher/language-switcher.css */
+.language-switcher {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.language-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.language-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.dark .language-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.language-toggle svg {
+  transition: all 0.2s ease;
+}
+
+.light .language-toggle svg {
+  color: #64748b;
+}
+
+.light .language-toggle:hover svg {
+  color: #1e293b;
+}
+
+.dark .language-toggle svg {
+  color: #cbd5e1;
+}
+
+.dark .language-toggle:hover svg {
+  color: #f8fafc;
+}
+
+.language-code {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  background-color: #5711a4;
+  color: white;
+  padding: 1px 4px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.language-name {
+  font-size: 14px;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+.light .language-name {
+  color: #64748b;
+}
+
+.dark .language-name {
+  color: #cbd5e1;
+}

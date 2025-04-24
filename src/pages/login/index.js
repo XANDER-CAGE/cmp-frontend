@@ -7,12 +7,17 @@ import logoImg from '../../assets/images/bg-logo.png';
 import { APP_SERIAL } from "../../constants";
 import { UserOutlined, LockOutlined, EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons';
 import './login.css';
+import { useLanguage } from "../../contexts/LanguageContext";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
+import LanguageSwitcher from "../../components/language-switcher";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,22 +42,23 @@ const Login = () => {
       if (response?.success) {
         dispatch(userLogin(response?.data));
         notification.success({
-          message: 'Успешная авторизация',
-          description: 'Добро пожаловать в Billing!',
+          message: language === 'en' ? 'Successful login' : 'Успешная авторизация',
+          description: language === 'en' ? 'Welcome to Billing!' : 'Добро пожаловать в Billing!',
           placement: 'topRight',
           duration: 3
         });
       } else {
         notification.error({
-          message: 'Ошибка авторизации',
-          description: response?.error || 'Неверные учетные данные',
+          message: language === 'en' ? 'Authentication error' : 'Ошибка авторизации',
+          description: response?.error || (language === 'en' ? 'Invalid credentials' : 'Неверные учетные данные'),
           placement: 'topRight'
         });
       }
     } catch (error) {
-      const errorMessage = error?.response?.data?.error || error?.response?.statusText || 'Ошибка сервера!';
+      const errorMessage = error?.response?.data?.error || error?.response?.statusText || 
+                          (language === 'en' ? 'Server error!' : 'Ошибка сервера!');
       notification.error({
-        message: 'Ошибка авторизации',
+        message: language === 'en' ? 'Authentication error' : 'Ошибка авторизации',
         description: errorMessage,
         placement: 'topRight'
       });
@@ -65,12 +71,20 @@ const Login = () => {
     <div className="login-container">
       <div className="login-overlay"></div>
       
+      <div className="language-switcher-login">
+        <LanguageSwitcher />
+      </div>
+      
       <div className="login-card">
         <div className="login-form-container">
           <div className="login-header">
             <img src={logoImg} alt="Company Logo" className="login-logo" />
-            <h1 className="login-title">Billing System</h1>
-            <p className="login-subtitle">Please enter your login credentials</p>
+            <h1 className="login-title">
+              {t(translations, 'billingSystem', language)}
+            </h1>
+            <p className="login-subtitle">
+              {t(translations, 'loginInstructions', language)}
+            </p>
           </div>
           
           <Form
@@ -86,13 +100,13 @@ const Login = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please, enter login!",
+                  message: t(translations, 'enterLoginError', language),
                 },
               ]}
             >
               <Input 
                 prefix={<UserOutlined className="site-form-item-icon" />} 
-                placeholder="Login" 
+                placeholder={t(translations, 'loginPlaceholder', language)} 
                 size="large"
                 autoComplete="username"
               />
@@ -103,13 +117,13 @@ const Login = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please, enter password!",
+                  message: t(translations, 'enterPasswordError', language),
                 },
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                placeholder="Password"
+                placeholder={t(translations, 'passwordPlaceholder', language)}
                 size="large"
                 autoComplete="current-password"
                 iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
@@ -126,7 +140,7 @@ const Login = () => {
                 block
                 size="large"
               >
-                {isLoading ? <Spin size="small" /> : "Enter"}
+                {isLoading ? <Spin size="small" /> : t(translations, 'enterButton', language)}
               </Button>
             </Form.Item>
           </Form>
@@ -138,7 +152,7 @@ const Login = () => {
         
         {!isMobile && (
           <div className="login-image-container">
-            {/* Здесь будет фоновое изображение, заданное в CSS */}
+            {/* Background image set in CSS */}
           </div>
         )}
       </div>

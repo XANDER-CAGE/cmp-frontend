@@ -6,10 +6,14 @@ import { toast } from 'react-toastify';
 import BankCardsModal from '../../modals/bankCards';
 import { bankCardsColumns } from '../../sources/columns/bankCardsColumns';
 import { useParams } from 'react-router-dom';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../translations';
+import { t } from '../../utils/transliteration';
 
 const BankCards = (props) => {
     const { companyId } = useParams()
     const { openedCompanyId } = props
+    const { language } = useLanguage();
 
     const [bankCards, setBankCards] = useState([])
     const [pageNumber, setPageNumber] = useState(1)
@@ -49,13 +53,13 @@ const BankCards = (props) => {
         try {
             const response = await http.delete(`CompanyBankCards/${id}`)
             if (response?.success) {
-                toast.success('Succesfully deleted!')
+                toast.success(t(translations, 'successfullyDeleted', language))
                 getBankCards()
             } else {
                 toast.error(response?.error)
             }
         } catch (error) {
-            toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? 'Server Error!')
+            toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? t(translations, 'serverError', language))
         } finally {
             setDeleteLoading(false)
         }
@@ -88,7 +92,7 @@ const BankCards = (props) => {
                     <Input.Search
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
-                        placeholder='Search'
+                        placeholder={t(translations, 'search', language)}
                         allowClear
                     />
                     <Button
@@ -96,14 +100,14 @@ const BankCards = (props) => {
                         onClick={() => openModal(null)}
                         className='ml-3'
                     >
-                        + Add
+                        + {t(translations, 'add', language)}
                     </Button>
                 </Col>
             </Row>
 
             <CustomTable
                 name="bankCards"
-                columns={bankCardsColumns(pageNumber, pageSize, deleteBankCard, deleteLoading, openModal)}
+                columns={bankCardsColumns(pageNumber, pageSize, deleteBankCard, deleteLoading, openModal, language)}
                 data={bankCards}
                 size="small"
                 setPageNumber={setPageNumber}

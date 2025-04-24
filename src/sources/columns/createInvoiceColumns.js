@@ -1,6 +1,8 @@
 import { Checkbox } from "antd"
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAllChecked, setUnselectedIDs, setSelectedIDs, isChecked) => [
+export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAllChecked, setUnselectedIDs, setSelectedIDs, isChecked, language = 'en') => [
     {
         title: (
             <Checkbox
@@ -33,7 +35,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `Organization`,
+        title: t(translations, 'organization', language),
         dataIndex: ['organization', 'name'],
         key: 'organization',
         type: 'string',
@@ -42,7 +44,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `EFS Account`,
+        title: t(translations, 'efsAccount', language),
         dataIndex: ['efsAccount', 'name'],
         key: 'efsAccount',
         type: 'string',
@@ -51,7 +53,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `Company`,
+        title: t(translations, 'company', language),
         dataIndex: ['company', 'name'],
         key: 'company',
         type: 'string',
@@ -60,7 +62,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `Pricing Models`,
+        title: t(translations, 'pricingModels', language),
         dataIndex: 'pricingModel',
         key: 'pricingModel',
         align: 'center',
@@ -68,7 +70,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `Billing Cycle`,
+        title: t(translations, 'billingCycle', language),
         dataIndex: 'billingCycle',
         key: 'billingCycle',
         align: 'center',
@@ -76,7 +78,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `Billing Type`,
+        title: t(translations, 'billingType', language),
         dataIndex: 'billingType',
         key: 'billingType',
         align: 'center',
@@ -84,7 +86,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `Discount`,
+        title: t(translations, 'discount', language),
         dataIndex: 'discount',
         key: 'discount',
         align: 'center',
@@ -92,7 +94,7 @@ export const createInvoiceColumns = (pageNumber, pageSize, setIsAllChecked, isAl
         checked: true,
     },
     {
-        title: `Fees Type`,
+        title: t(translations, 'feesType', language),
         dataIndex: 'feesType',
         key: 'feesType',
         align: 'center',

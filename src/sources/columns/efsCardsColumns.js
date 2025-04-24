@@ -1,6 +1,8 @@
 import { setTashkentTime } from "../../utils"
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const efsCardsColumns = (pageNumber, pageSize) => [
+export const efsCardsColumns = (pageNumber, pageSize, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -15,7 +17,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Account Name`,
+        title: t(translations, 'accountName', language),
         dataIndex: 'accountName',
         key: 'accountName',
         type: 'string',
@@ -24,7 +26,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Card Number`,
+        title: t(translations, 'cardNumber', language),
         dataIndex: 'cardNumber',
         key: 'cardNumber',
         type: 'string',
@@ -33,16 +35,23 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Card Status`,
+        title: t(translations, 'cardStatus', language),
         dataIndex: 'cardStatus',
         key: 'cardStatus',
         type: 'string',
         align: 'center',
         width: 200,
         checked: true,
+        render: (status) => {
+            if (status === 'Active') return t(translations, 'statusActive', language);
+            if (status === 'Inactive') return t(translations, 'statusInactive', language);
+            if (status === 'Hold') return t(translations, 'statusHold', language);
+            if (status === 'Deleted') return t(translations, 'statusDeleted', language);
+            return status;
+        }
     },
     {
-        title: `Driver Name`,
+        title: t(translations, 'driverName', language),
         dataIndex: 'driverName',
         key: 'driverName',
         type: 'string',
@@ -51,7 +60,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Driver Id`,
+        title: t(translations, 'driverId', language),
         dataIndex: 'driverId',
         key: 'driverId',
         type: 'string',
@@ -60,7 +69,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Unit Number`,
+        title: t(translations, 'unitNumber', language),
         dataIndex: 'unitNumber',
         key: 'unitNumber',
         type: 'string',
@@ -69,7 +78,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Sync Time`,
+        title: t(translations, 'syncTime', language),
         dataIndex: 'syncTime',
         key: 'syncTime',
         type: 'string',
@@ -79,7 +88,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         render: (row) => setTashkentTime(row)
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         type: 'string',
@@ -89,7 +98,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         render: (row) => setTashkentTime(row)
     },
     {
-        title: `Created User`,
+        title: t(translations, 'createdUser', language),
         dataIndex: ['createdUser', 'username'],
         key: 'createdUser',
         type: 'string',
@@ -98,7 +107,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Updated At`,
+        title: t(translations, 'updatedAt', language),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         type: 'string',
@@ -108,7 +117,7 @@ export const efsCardsColumns = (pageNumber, pageSize) => [
         render: (row) => row ? setTashkentTime(row) : null
     },
     {
-        title: `Updated User`,
+        title: t(translations, 'updatedUser', language),
         dataIndex: ['updatedUser', 'username'],
         key: 'updatedUser',
         type: 'string',

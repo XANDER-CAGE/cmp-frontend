@@ -2,18 +2,22 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Checkbox, Table, Popover, Pagination } from 'antd'
 import { BsFilter } from "react-icons/bs"
 import { useLocalStorageState } from 'ahooks'
+import { useLanguage } from '../../contexts/LanguageContext'
+import { translations } from '../../translations'
+import { t } from '../../utils/transliteration'
 
 const CustomTable = (props) => {
     const { name, data, columns, size, rowClassName, isLoading, setPageNumber, setPageSize, pageNumber, totalCount, pageSize, scrollY,
         showPagination = true, showFilter = true, isRowSelection = false, onRowSelection, expandable,
-      rowKey = 'id',
-      className = '',
+        rowKey = 'id',
+        className = '',
         rowSelection,
-      onSort,
-      footer,
-      components
+        onSort,
+        footer,
+        components
     } = props
 
+    const { language } = useLanguage();
     const [filterColumns, setFilterColumns] = useLocalStorageState(`table-columns-${name}`, {
         defaultValue: {},
     });
@@ -145,7 +149,11 @@ const CustomTable = (props) => {
                             onShowSizeChange={(current, pageSize) => {
                                 setPageSize(pageSize)
                             }}
-                            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+                            showTotal={(total, range) => 
+                                language === 'en' 
+                                    ? `${range[0]}-${range[1]} of ${total} items` 
+                                    : `${range[0]}-${range[1]} из ${total} элементов`
+                            }
                         />
                     ) : null
                 }

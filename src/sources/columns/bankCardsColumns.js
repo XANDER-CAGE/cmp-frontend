@@ -3,8 +3,10 @@ import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoading, openModal) => [
+export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -19,7 +21,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         checked: true,
     },
     {
-        title: `Company`,
+        title: t(translations, 'company', language),
         dataIndex: 'company',
         key: 'company',
         type: 'string',
@@ -33,7 +35,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         }
     },
     {
-        title: `Cardholder Name`,
+        title: t(translations, 'cardholderName', language),
         dataIndex: 'cardholderName',
         key: 'cardholderName',
         type: 'string',
@@ -42,7 +44,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         checked: true,
     },
     {
-        title: `Card Number`,
+        title: t(translations, 'cardNumber', language),
         dataIndex: 'cardNumber',
         key: 'cardNumber',
         type: 'string',
@@ -51,7 +53,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         checked: true,
     },
     {
-        title: `Expiration Date`,
+        title: t(translations, 'expirationDate', language),
         dataIndex: 'expirationDate',
         key: 'expirationDate',
         type: 'string',
@@ -60,7 +62,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         checked: true,
     },
     {
-        title: `CVV`,
+        title: t(translations, 'cvv', language),
         dataIndex: 'cvv',
         key: 'cvv',
         type: 'string',
@@ -69,7 +71,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         checked: true,
     },
     {
-        title: `Notes`,
+        title: t(translations, 'notes', language),
         dataIndex: 'notes',
         key: 'notes',
         type: 'string',
@@ -78,7 +80,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         checked: true,
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -87,7 +89,7 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
         render: (date) => <>{setTashkentTime(date)}</>
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -98,10 +100,10 @@ export const bankCardsColumns = (pageNumber, pageSize, deleteBankCard, deleteLoa
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteBankCard(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

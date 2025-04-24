@@ -35,11 +35,15 @@ import {
   SyncOutlined
 } from '@ant-design/icons';
 import { useLocalStorageState } from 'ahooks';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../translations';
+import { t } from '../../utils/transliteration';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
 
 const Companies = () => {
+  const { language } = useLanguage();
   const [companies, setCompanies] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -121,13 +125,13 @@ const Companies = () => {
     try {
       const response = await http.delete(`Companies/${id}`);
       if (response?.success) {
-        toast.success('Successfully deleted!');
+        toast.success(t(translations, 'successfullyDeleted', language));
         getCompanies();
       } else {
         toast.error(response?.error);
       }
     } catch (error) {
-      toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? 'Server Error!');
+      toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? t(translations, 'serverError', language));
     } finally {
       setDeleteLoading(false);
     }
@@ -190,7 +194,7 @@ const Companies = () => {
   // Table columns
   const columns = [
     {
-      title: 'Company',
+      title: t(translations, 'company', language),
       dataIndex: 'name',
       key: 'name',
       render: (_, record) => (
@@ -212,7 +216,7 @@ const Companies = () => {
       ),
     },
     {
-      title: 'Contact Information',
+      title: t(translations, 'contactInformation', language),
       dataIndex: 'contact',
       key: 'contact',
       render: (_, record) => (
@@ -231,7 +235,7 @@ const Companies = () => {
       ),
     },
     {
-      title: 'Billing Cycle',
+      title: t(translations, 'billingCycle', language),
       dataIndex: 'billingCycle',
       key: 'billingCycle',
       render: (cycle) => {
@@ -240,21 +244,23 @@ const Companies = () => {
       },
     },
     {
-      title: 'Status',
+      title: t(translations, 'status', language),
       dataIndex: 'status',
       key: 'status',
       render: (_, record) => (
         <Space direction="vertical" size="small">
           <Badge
             status={record.companyStatus === 'Active' ? 'success' : 'error'}
-            text={record.companyStatus || '-'}
+            text={record.companyStatus === 'Active' 
+              ? t(translations, 'statusActive', language) 
+              : t(translations, 'statusInactive', language)}
           />
           {record.isTrusted !== undefined && (
             <Tag color={record.isTrusted ? 'green' : 'red'} className="ml-0">
               {record.isTrusted ? (
-                <span><CheckCircleOutlined /> Trusted</span>
+                <span><CheckCircleOutlined /> {t(translations, 'trusted', language)}</span>
               ) : (
-                <span><CloseCircleOutlined /> Not Trusted</span>
+                <span><CloseCircleOutlined /> {t(translations, 'notTrusted', language)}</span>
               )}
             </Tag>
           )}
@@ -262,26 +268,26 @@ const Companies = () => {
       ),
     },
     {
-      title: 'EFS Account',
+      title: t(translations, 'efsAccount', language),
       dataIndex: 'efsAccount',
       key: 'efsAccount',
       render: (_, record) => record.efsAccount?.name || '-',
     },
     {
-      title: 'Actions',
+      title: t(translations, 'actions', language),
       key: 'actions',
       width: 80,
       render: (_, record) => {
         const items = [
           {
             key: 'edit',
-            label: 'Edit',
+            label: t(translations, 'edit', language),
             icon: <EditOutlined />,
             onClick: () => openModal(record.id),
           },
           {
             key: 'delete',
-            label: 'Delete',
+            label: t(translations, 'delete', language),
             icon: <DeleteOutlined />,
             danger: true,
             onClick: () => {
@@ -324,10 +330,10 @@ const Companies = () => {
     >
       <Space direction="vertical" size="middle" className="w-full">
         <div className="flex justify-between items-center">
-          <Title level={4} style={{ margin: 0 }}>Companies</Title>
+          <Title level={4} style={{ margin: 0 }}>{t(translations, 'companies', language)}</Title>
           <Space>
             <Input.Search
-              placeholder="Search companies"
+              placeholder={t(translations, 'searchCompanies', language)}
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               allowClear
@@ -339,7 +345,7 @@ const Companies = () => {
               icon={<PlusOutlined />}
               onClick={() => openModal(null)}
             >
-              Add Company
+              {t(translations, 'addCompany', language)}
             </Button>
           </Space>
         </div>
@@ -354,7 +360,7 @@ const Companies = () => {
             onChange={() => setIsOpenFilter(!isOpenFilter)}
             ghost
             expandIcon={({ isActive }) => (
-              <Tooltip title={isActive ? 'Hide Filters' : 'Show Filters'}>
+              <Tooltip title={isActive ? t(translations, 'hideFilters', language) : t(translations, 'showFilters', language)}>
                 <Badge count={activeFilterCount} size="small" offset={[5, -3]}>
                   <Button
                     type="text"
@@ -368,12 +374,16 @@ const Companies = () => {
               </Tooltip>
             )}
           >
-            <Panel header={<Text strong>Filters</Text>} key="1" showArrow={false}>
+            <Panel header={<Text strong>{t(translations, 'filters', language)}</Text>} key="1" showArrow={false}>
               <Row gutter={[16, 16]} align="middle">
                 <Col span={24}>
                   <div className="flex justify-between items-center mb-4">
                     <Text type="secondary">
-                      {activeFilterCount > 0 ? `${activeFilterCount} filter${activeFilterCount > 1 ? 's' : ''} applied` : 'No filters applied'}
+                      {activeFilterCount > 0 ? 
+                        language === 'en' ? 
+                          `${activeFilterCount} filter${activeFilterCount > 1 ? 's' : ''} applied` :
+                          `${activeFilterCount} фильтр${activeFilterCount > 1 ? 'ов' : ''} применен${activeFilterCount > 1 ? 'о' : ''}` :
+                        t(translations, 'noFiltersApplied', language)}
                     </Text>
                     {activeFilterCount > 0 && (
                       <Button 
@@ -381,16 +391,16 @@ const Companies = () => {
                         onClick={clearAllFilters}
                         icon={<SyncOutlined />}
                       >
-                        Clear All
+                        {t(translations, 'clearAll', language)}
                       </Button>
                     )}
                   </div>
                 </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                  <Text strong className="block mb-1">Organization</Text>
+                  <Text strong className="block mb-1">{t(translations, 'organization', language)}</Text>
                   <Select
                     className="w-full"
-                    placeholder="Select Organization"
+                    placeholder={t(translations, 'selectOrganization', language)}
                     options={makeOptions(organizations, 'name')}
                     showSearch
                     allowClear
@@ -402,10 +412,10 @@ const Companies = () => {
                   />
                 </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                  <Text strong className="block mb-1">EFS Account</Text>
+                  <Text strong className="block mb-1">{t(translations, 'efsAccount', language)}</Text>
                   <Select
                     className="w-full"
-                    placeholder="Select EFS Account"
+                    placeholder={t(translations, 'selectEfsAccount', language)}
                     options={makeOptions(efsAccounts, 'name')}
                     showSearch
                     allowClear
@@ -417,10 +427,10 @@ const Companies = () => {
                   />
                 </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                  <Text strong className="block mb-1">Billing Cycle</Text>
+                  <Text strong className="block mb-1">{t(translations, 'billingCycle', language)}</Text>
                   <Select
                     className="w-full"
-                    placeholder="Select Billing Cycle"
+                    placeholder={t(translations, 'selectBillingCycle', language)}
                     options={billingCycleOptions}
                     showSearch
                     allowClear
@@ -432,13 +442,13 @@ const Companies = () => {
                   />
                 </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                  <Text strong className="block mb-1">Trusted Status</Text>
+                  <Text strong className="block mb-1">{t(translations, 'trustedStatus', language)}</Text>
                   <Select
                     className="w-full"
-                    placeholder="Is Trusted"
+                    placeholder={t(translations, 'isTrusted', language)}
                     options={[
-                      { value: true, label: "Yes" },
-                      { value: false, label: "No" }
+                      { value: true, label: t(translations, 'yes', language) },
+                      { value: false, label: t(translations, 'no', language) }
                     ]}
                     allowClear
                     value={isTrusted}
@@ -446,13 +456,13 @@ const Companies = () => {
                   />
                 </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                  <Text strong className="block mb-1">Company Status</Text>
+                  <Text strong className="block mb-1">{t(translations, 'companyStatus', language)}</Text>
                   <Select
                     className="w-full"
-                    placeholder="Select Status"
+                    placeholder={t(translations, 'selectStatus', language)}
                     options={[
-                      { value: "Active", label: "Active" },
-                      { value: "Inactive", label: "Inactive" }
+                      { value: "Active", label: t(translations, 'statusActive', language) },
+                      { value: "Inactive", label: t(translations, 'statusInactive', language) }
                     ]}
                     allowClear
                     value={companyStatus}
@@ -460,10 +470,10 @@ const Companies = () => {
                   />
                 </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                  <Text strong className="block mb-1">Missing Information</Text>
+                  <Text strong className="block mb-1">{t(translations, 'missingInformation', language)}</Text>
                   <Select
                     className="w-full"
-                    placeholder="Missing Information"
+                    placeholder={t(translations, 'missingInformation', language)}
                     options={missingFilterOptions}
                     showSearch
                     allowClear
@@ -494,7 +504,10 @@ const Companies = () => {
               setPageNumber(page);
               setPageSize(size);
             },
-            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+            showTotal: (total, range) => 
+              language === 'en' 
+                ? `${range[0]}-${range[1]} of ${total} items` 
+                : `${range[0]}-${range[1]} из ${total} элементов`,
           }}
           scroll={{ x: 'max-content' }}
           size="middle"
@@ -509,24 +522,30 @@ const Companies = () => {
           closeModal={closeModal}
           getCompanies={getCompanies}
           editId={editId}
+          language={language}
         />
       )}
 
       {/* Delete Confirmation Modal */}
       <Modal
-        title="Confirm Delete"
+        title={t(translations, 'confirmDelete', language)}
         open={confirmDelete}
         onOk={handleDeleteCompany}
         onCancel={() => {
           setConfirmDelete(false);
           setSelectedCompany(null);
         }}
-        okText="Delete"
-        cancelText="Cancel"
+        okText={t(translations, 'delete', language)}
+        cancelText={t(translations, 'cancel', language)}
         okButtonProps={{ danger: true, loading: deleteLoading }}
       >
-        <p>Are you sure you want to delete company <strong>{selectedCompany?.name}</strong>?</p>
-        <p>This action cannot be undone.</p>
+        <p>
+          {language === 'en' 
+            ? `Are you sure you want to delete company `
+            : `Вы уверены, что хотите удалить компанию `}
+          <strong>{selectedCompany?.name}</strong>?
+        </p>
+        <p>{t(translations, 'actionCannotBeUndone', language)}</p>
       </Modal>
     </Card>
   );

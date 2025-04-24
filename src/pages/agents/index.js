@@ -26,10 +26,14 @@ import {
   MailOutlined,
   TeamOutlined
 } from '@ant-design/icons';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../translations';
+import { t } from '../../utils/transliteration';
 
 const { Title, Text } = Typography;
 
 const Agents = () => {
+  const { language } = useLanguage();
   const [agents, setAgents] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -78,13 +82,14 @@ const Agents = () => {
     try {
       const response = await http.delete(`agents/${id}`);
       if (response?.success) {
-        toast.success('Successfully deleted!');
+        toast.success(language === 'en' ? 'Successfully deleted!' : 'Успешно удалено!');
         getAgents();
       } else {
         toast.error(response?.error);
       }
     } catch (error) {
-      toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? 'Server Error!');
+      toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? 
+                 (language === 'en' ? 'Server Error!' : 'Ошибка сервера!'));
     } finally {
       setDeleteLoading(false);
     }
@@ -128,7 +133,7 @@ const Agents = () => {
   // Table columns
   const columns = [
     {
-      title: 'Agent',
+      title: t(translations, 'agent', language),
       dataIndex: 'name',
       key: 'name',
       render: (_, record) => (
@@ -157,7 +162,7 @@ const Agents = () => {
       ),
     },
     {
-      title: 'Contact Information',
+      title: t(translations, 'contactInformation', language),
       dataIndex: 'contactInfo',
       key: 'contactInfo',
       render: (_, record) => (
@@ -176,37 +181,43 @@ const Agents = () => {
       ),
     },
     {
-      title: 'Status',
+      title: t(translations, 'status', language),
       dataIndex: 'status',
       key: 'status',
       render: (status) => {
         let color = 'blue';
         if (status === 'Active') color = 'green';
         if (status === 'Inactive') color = 'red';
-        return <Tag color={color}>{status || 'N/A'}</Tag>;
+        return <Tag color={color}>{
+          status === 'Active' 
+            ? t(translations, 'statusActive', language) 
+            : status === 'Inactive' 
+              ? t(translations, 'statusInactive', language) 
+              : status || 'N/A'
+        }</Tag>;
       },
     },
     {
-      title: 'Created Date',
+      title: t(translations, 'createdDate', language),
       dataIndex: 'createdDate',
       key: 'createdDate',
-      render: (date) => new Date(date).toLocaleDateString(),
+      render: (date) => new Date(date).toLocaleDateString(language === 'en' ? 'en-US' : 'ru-RU'),
     },
     {
-      title: 'Actions',
+      title: t(translations, 'actions', language),
       key: 'actions',
       width: 80,
       render: (_, record) => {
         const items = [
           {
             key: 'edit',
-            label: 'Edit',
+            label: t(translations, 'edit', language),
             icon: <EditOutlined />,
             onClick: () => openModal(record.id),
           },
           {
             key: 'delete',
-            label: 'Delete',
+            label: t(translations, 'delete', language),
             icon: <DeleteOutlined />,
             danger: true,
             onClick: () => {
@@ -249,10 +260,10 @@ const Agents = () => {
     >
       <Space direction="vertical" size="middle" className="w-full">
         <div className="flex justify-between items-center">
-          <Title level={4} style={{ margin: 0 }}>Agents</Title>
+          <Title level={4} style={{ margin: 0 }}>{t(translations, 'agents', language)}</Title>
           <Space>
             <Input.Search
-              placeholder="Search agents"
+              placeholder={t(translations, 'searchAgents', language)}
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               allowClear
@@ -264,7 +275,7 @@ const Agents = () => {
               icon={<PlusOutlined />}
               onClick={() => openModal(null)}
             >
-              Add Agent
+              {t(translations, 'addAgent', language)}
             </Button>
           </Space>
         </div>
@@ -284,7 +295,10 @@ const Agents = () => {
               setPageNumber(page);
               setPageSize(size);
             },
-            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+            showTotal: (total, range) => 
+              language === 'en' 
+                ? `${range[0]}-${range[1]} of ${total} items` 
+                : `${range[0]}-${range[1]} из ${total} элементов`,
           }}
           scroll={{ x: 'max-content' }}
           size="middle"
@@ -304,19 +318,24 @@ const Agents = () => {
 
       {/* Delete Confirmation Modal */}
       <Modal
-        title="Confirm Delete"
+        title={t(translations, 'confirmDelete', language)}
         open={confirmDelete}
         onOk={handleDeleteConfirm}
         onCancel={() => {
           setConfirmDelete(false);
           setSelectedAgent(null);
         }}
-        okText="Delete"
-        cancelText="Cancel"
+        okText={t(translations, 'delete', language)}
+        cancelText={t(translations, 'cancel', language)}
         okButtonProps={{ danger: true, loading: deleteLoading }}
       >
-        <p>Are you sure you want to delete agent <strong>{selectedAgent?.name}</strong>?</p>
-        <p>This action cannot be undone.</p>
+        <p>
+          {language === 'en' 
+            ? `Are you sure you want to delete agent `
+            : `Вы уверены, что хотите удалить агента `}
+          <strong>{selectedAgent?.name}</strong>?
+        </p>
+        <p>{t(translations, 'actionCannotBeUndone', language)}</p>
       </Modal>
     </Card>
   );

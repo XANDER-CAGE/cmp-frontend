@@ -6,10 +6,14 @@ import { toast } from 'react-toastify';
 import CompanyAccountCardModal from '../../modals/companyAccountCards';
 import { companyAccountCardsColumns } from '../../sources/columns/companyAccountCards';
 import { useParams } from 'react-router-dom';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../translations';
+import { t } from '../../utils/transliteration';
 
 const CompanyAccountCards = (props) => {
     const { companyId } = useParams()
     const {openedCompanyId} = props
+    const { language } = useLanguage();
 
     const [companyAccountCards, setCompanyAccountCards] = useState([])
     const [pageNumber, setPageNumber] = useState(1)
@@ -61,13 +65,13 @@ const CompanyAccountCards = (props) => {
         try {
             const response = await http.delete(`CompanyAccountCards/${id}`)
             if (response?.success) {
-                toast.success('Succesfully deleted!')
+                toast.success(t(translations, 'successfullyDeleted', language))
                 getCompanyAccountCards()
             } else {
                 toast.error(response?.error)
             }
         } catch (error) {
-            toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? 'Server Error!')
+            toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? t(translations, 'serverError', language))
         } finally {
             setDeleteLoading(false)
         }
@@ -92,7 +96,7 @@ const CompanyAccountCards = (props) => {
             link.click()
             return 1
         } catch (error) {
-            toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? 'Server Error!')
+            toast.error(error?.response?.data?.error ?? error?.response?.statusText ?? t(translations, 'serverError', language))
         } finally {
             setIsLoadingExportTable(false)
         }
@@ -115,7 +119,7 @@ const CompanyAccountCards = (props) => {
                     <Input.Search
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
-                        placeholder='Search'
+                        placeholder={t(translations, 'search', language)}
                         allowClear
                     />
                     {
@@ -126,7 +130,7 @@ const CompanyAccountCards = (props) => {
                                 className='ml-3'
                                 loading={isLoadingExportTable}
                             >
-                                Export
+                                {t(translations, 'export', language)}
                             </Button>
                         ) : null
                     }
@@ -135,14 +139,14 @@ const CompanyAccountCards = (props) => {
                         onClick={() => openModal(null)}
                         className='ml-3'
                     >
-                        + Add
+                        + {t(translations, 'add', language)}
                     </Button>
                 </Col>
             </Row>
 
             <CustomTable
                 name="companyAccountCards"
-                columns={companyAccountCardsColumns(pageNumber, pageSize, deleteCompanyAccountCard, deleteLoading, openModal)}
+                columns={companyAccountCardsColumns(pageNumber, pageSize, deleteCompanyAccountCard, deleteLoading, openModal, language)}
                 data={companyAccountCards}
                 size="small"
                 setPageNumber={setPageNumber}
@@ -162,6 +166,7 @@ const CompanyAccountCards = (props) => {
                         closeModal={closeModal}
                         getCompanyAccountCards={getCompanyAccountCards}
                         editId={editId}
+                        language={language}
                     />
                 ) : null
             }

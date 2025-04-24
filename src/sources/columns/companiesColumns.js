@@ -3,8 +3,10 @@ import { setTashkentTime } from "../../utils"
 import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoading, openModal) => [
+export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -19,7 +21,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Name`,
+        title: t(translations, 'name', language),
         key: 'name',
         type: 'string',
         align: 'center',
@@ -44,7 +46,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         }
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -54,7 +56,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         render: (date) => <>{setTashkentTime(date)}</>,
     },
     {
-        title: `Agent`,
+        title: t(translations, 'agent', language),
         dataIndex: ['agent', 'name'],
         key: 'agent',
         type: 'string',
@@ -63,7 +65,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Description`,
+        title: t(translations, 'description', language),
         dataIndex: 'description',
         key: 'description',
         type: 'string',
@@ -72,7 +74,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Address`,
+        title: t(translations, 'address', language),
         dataIndex: 'address',
         key: 'address',
         type: 'string',
@@ -81,7 +83,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Emails`,
+        title: t(translations, 'emails', language),
         dataIndex: 'emails',
         key: 'emails',
         align: 'center',
@@ -100,7 +102,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         }
     },
     {
-        title: `Phones`,
+        title: t(translations, 'phones', language),
         dataIndex: 'phoneNumbers',
         key: 'phoneNumbers',
         align: 'center',
@@ -119,7 +121,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         }
     },
     {
-        title: `Owner Names`,
+        title: t(translations, 'ownerNames', language),
         dataIndex: 'ownerNames',
         key: 'ownerNames',
         type: 'string',
@@ -139,7 +141,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         }
     },
     {
-        title: `Is Trusted`,
+        title: t(translations, 'isTrusted', language),
         dataIndex: 'isTrusted',
         key: 'isTrusted',
         type: 'string',
@@ -147,13 +149,13 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         width: 150,
         checked: true,
         render: (isTrusted) => {
-            if (isTrusted === true) return <>Yes</>
-            else if (isTrusted === false) return <>No</>
+            if (isTrusted === true) return <>{t(translations, 'yes', language)}</>
+            else if (isTrusted === false) return <>{t(translations, 'no', language)}</>
             else return <></>
         }
     },
     {
-        title: `Untrusted Reason`,
+        title: t(translations, 'untrustedReason', language),
         dataIndex: 'untrustedReason',
         key: 'untrustedReason',
         type: 'string',
@@ -162,7 +164,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Updated User`,
+        title: t(translations, 'updatedUser', language),
         dataIndex: 'updatedUser',
         key: 'updatedUser',
         type: 'string',
@@ -171,7 +173,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Updated At`,
+        title: t(translations, 'updatedAt', language),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         type: 'string',
@@ -181,7 +183,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         render: (updatedAt) => <>{updatedAt ? setTashkentTime(updatedAt) : null}</>
     },
     {
-        title: `Website`,
+        title: t(translations, 'website', language),
         dataIndex: 'website',
         key: 'website',
         type: 'string',
@@ -190,7 +192,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Credit Score`,
+        title: t(translations, 'creditScore', language),
         dataIndex: 'creditScore',
         key: 'creditScore',
         type: 'string',
@@ -199,7 +201,7 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Notes`,
+        title: t(translations, 'notes', language),
         dataIndex: 'notes',
         key: 'notes',
         type: 'string',
@@ -208,16 +210,21 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
         checked: true,
     },
     {
-        title: `Status`,
+        title: t(translations, 'status', language),
         dataIndex: 'companyStatus',
         key: 'companyStatus',
         type: 'string',
         align: 'center',
         width: 150,
         checked: true,
+        render: (status) => {
+            if (status === 'Active') return t(translations, 'statusActive', language);
+            if (status === 'Inactive') return t(translations, 'statusInactive', language);
+            return status;
+        }
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -228,10 +235,10 @@ export const companiesColumns = (pageNumber, pageSize, deleteCompany, deleteLoad
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteCompany(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

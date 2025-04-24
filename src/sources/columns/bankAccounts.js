@@ -3,8 +3,10 @@ import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, deleteLoading, openModal) => [
+export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -19,7 +21,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         checked: true,
     },
     {
-        title: `Company`,
+        title: t(translations, 'company', language),
         dataIndex: 'company',
         key: 'company',
         type: 'string',
@@ -33,7 +35,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         }
     },
     {
-        title: `Bank Account Name`,
+        title: t(translations, 'bankAccountName', language),
         dataIndex: 'bankAccountName',
         key: 'bankAccountName',
         type: 'string',
@@ -42,7 +44,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         checked: true,
     },
     {
-        title: `Bank Account Number`,
+        title: t(translations, 'bankAccountNumber', language),
         dataIndex: 'bankAccountNumber',
         key: 'bankAccountNumber',
         type: 'string',
@@ -51,7 +53,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         checked: true,
     },
     {
-        title: `Routing Number`,
+        title: t(translations, 'routingNumber', language),
         dataIndex: 'routingNumber',
         key: 'routingNumber',
         type: 'string',
@@ -60,7 +62,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         checked: true,
     },
     {
-        title: `Tax Id`,
+        title: t(translations, 'taxId', language),
         dataIndex: 'taxId',
         key: 'taxId',
         type: 'string',
@@ -69,7 +71,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         checked: true,
     },
     {
-        title: `Unit Number`,
+        title: t(translations, 'unitNumber', language),
         dataIndex: 'unitNumber',
         key: 'unitNumber',
         type: 'string',
@@ -78,7 +80,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         checked: true,
     },
     {
-        title: `Notes`,
+        title: t(translations, 'notes', language),
         dataIndex: 'notes',
         key: 'notes',
         type: 'string',
@@ -87,7 +89,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         checked: true,
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -96,7 +98,7 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
         render: (date) => <>{setTashkentTime(date)}</>
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -107,10 +109,10 @@ export const bankAccountsColumns = (pageNumber, pageSize, deleteBankAccount, del
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteBankAccount(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

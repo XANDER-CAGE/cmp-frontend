@@ -2,8 +2,10 @@ import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { setTashkentTime } from "../../utils";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, openModal) => [
+export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -18,7 +20,7 @@ export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, 
         checked: true,
     },
     {
-        title: `Name`,
+        title: t(translations, 'name', language),
         dataIndex: 'name',
         key: 'name',
         type: 'string',
@@ -27,7 +29,7 @@ export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, 
         checked: true,
     },
     {
-        title: `Emails`,
+        title: t(translations, 'emails', language),
         dataIndex: 'emails',
         key: 'emails',
         align: 'center',
@@ -46,7 +48,7 @@ export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, 
         }
     },
     {
-        title: `Phones`,
+        title: t(translations, 'phones', language),
         dataIndex: 'phones',
         key: 'phones',
         align: 'center',
@@ -65,7 +67,7 @@ export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, 
         }
     },
     {
-        title: `Address`,
+        title: t(translations, 'address', language),
         dataIndex: 'address',
         key: 'address',
         align: 'center',
@@ -73,7 +75,7 @@ export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, 
         checked: true,
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -82,7 +84,7 @@ export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, 
         render: (date) => <>{setTashkentTime(date)}</>
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -93,10 +95,10 @@ export const agentsColumns = (pageNumber, pageSize, deleteAgent, deleteLoading, 
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteAgent(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

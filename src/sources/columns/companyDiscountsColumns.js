@@ -2,8 +2,10 @@ import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { setTashkentTime } from "../../utils";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDiscount, deleteLoading, openModal) => [
+export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDiscount, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -18,7 +20,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         checked: true,
     },
     {
-        title: `Modified At`,
+        title: t(translations, 'modifiedAt', language),
         dataIndex: 'modifiedAt',
         key: 'modifiedAt',
         type: 'string',
@@ -28,7 +30,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         render: (date) => <>{setTashkentTime(date)}</>
     },
     {
-        title: `Discount`,
+        title: t(translations, 'discount', language),
         dataIndex: 'discount',
         key: 'discount',
         type: 'string',
@@ -37,7 +39,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         checked: true,
     },
     {
-        title: `Performer`,
+        title: t(translations, 'performer', language),
         dataIndex: ['user', 'name'],
         key: 'performer',
         type: 'string',
@@ -46,7 +48,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         checked: true,
     },
     {
-        title: `Department`,
+        title: t(translations, 'department', language),
         dataIndex: ['modifiedUser', 'department'],
         key: 'department',
         type: 'string',
@@ -55,7 +57,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         checked: true,
     },
     {
-        title: `Companies Count`,
+        title: t(translations, 'companiesCount', language),
         dataIndex: 'companiesCount',
         key: 'companiesCount',
         type: 'string',
@@ -64,7 +66,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         checked: true,
     },
     {
-        title: `From Date`,
+        title: t(translations, 'fromDate', language),
         dataIndex: 'fromDate',
         key: 'fromDate',
         type: 'string',
@@ -73,7 +75,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         checked: true,
     },
     {
-        title: `To Date`,
+        title: t(translations, 'toDate', language),
         dataIndex: 'toDate',
         key: 'toDate',
         type: 'string',
@@ -82,7 +84,7 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
         checked: true,
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -95,14 +97,14 @@ export const companyDiscountsColumns = (pageNumber, pageSize, deleteCompanyDisco
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                         title={(
                             <>
-                                The line contains the generated customer invoice.
+                                {t(translations, 'lineContainsInvoice', language)}
                                 <br />
-                                Are you confirming that you want to perform this action?
+                                {t(translations, 'confirmAction', language)}
                             </>
                         )}
                         onConfirm={() => deleteCompanyDiscount(row)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

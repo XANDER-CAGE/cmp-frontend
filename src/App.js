@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useLocalStorageState } from 'ahooks';
 import { UserInfoContextProvider } from './contexts/UserInfoContext';
 import AuthContextProvider from './contexts/AuthContext';
+import { LanguageContextProvider } from './contexts/LanguageContext';
 
 // Color palette for light and dark themes
 const lightTheme = {
@@ -89,15 +90,17 @@ const App = () => {
         }}
       >
         <ThemeContext.Provider value={{ theme: isDarkMode, setTheme: setIsDarkMode }}>
-          {isAuth ? (
-            <AuthContextProvider>
-              <UserInfoContextProvider>
-                <AdminLayout />
-              </UserInfoContextProvider>
-            </AuthContextProvider>
-          ) : (
-            loginRouters
-          )}
+          <LanguageContextProvider>
+            {isAuth ? (
+              <AuthContextProvider>
+                <UserInfoContextProvider>
+                  <AdminLayout />
+                </UserInfoContextProvider>
+              </AuthContextProvider>
+            ) : (
+              loginRouters
+            )}
+          </LanguageContextProvider>
         </ThemeContext.Provider>
       </ConfigProvider>
     </div>

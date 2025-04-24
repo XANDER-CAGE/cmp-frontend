@@ -11,6 +11,9 @@ import { IoSettings } from "react-icons/io5";
 import './sidebar.css';
 import { ThemeContext } from '../../App';
 import { useUserInfo } from '../../contexts/UserInfoContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../translations';
+import { t } from '../../utils/transliteration';
 import Authorize from '../../utils/Authorize';
 import { PERMISSIONS } from '../../constants';
 
@@ -18,6 +21,7 @@ const Sidebar = (props) => {
     const { collapsed, setCollapsed } = props;
     const { theme } = useContext(ThemeContext);
     const { permissions, userInfo } = useUserInfo();
+    const { language } = useLanguage();
     const dispatch = useDispatch();
     const location = useLocation();
     const pathname = location.pathname.split('/')[1];
@@ -56,37 +60,47 @@ const Sidebar = (props) => {
     const items = useMemo(() => [
         Authorize(permissions, [PERMISSIONS.DASHBOARD.VIEW]) &&
         getItem(
-            'Dashboard',
+            t(translations, 'dashboard', language),
             'dashboard',
             <MdSpaceDashboard size={20} />,
             [
                 getItem(
                     <Link to='/station-statistics'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Chain Statistics</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'stationStatistics', language)}
+                        </div>
                     </Link>,
                     'station-statistics'
                 ),
                 getItem(
                     <Link to='/agent-performance'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Agent Performance</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'agentPerformance', language)}
+                        </div>
                     </Link>,
                     'agent-performance'
                 ),
                 getItem(
                     <Link to='/state-average-indicators'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>State Indicators</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'stateIndicators', language)}
+                        </div>
                     </Link>,
                     'state-average-indicators'
                 ),
                 getItem(
                     <Link to='/gross'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Payment Grosses</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'paymentGrosses', language)}
+                        </div>
                     </Link>,
                     'gross'
                 ),
                 getItem(
                     <Link to='/customers-information'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Customers Summary</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'customersSummary', language)}
+                        </div>
                     </Link>,
                     'customers-information'
                 ),
@@ -100,35 +114,43 @@ const Sidebar = (props) => {
           PERMISSIONS.POSITIONS.VIEW,
         ], false) &&
         getItem(
-            'User Management',
+            t(translations, 'userManagement', language),
             'user_management',
             <MdManageAccounts size={20} />,
             [
                 Authorize(permissions, [PERMISSIONS.USERS.VIEW]) &&
                 getItem(
                   <Link to="/users">
-                    <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Users</div>
+                    <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                        {t(translations, 'users', language)}
+                    </div>
                   </Link>,
                   'users',
                 ),
                 Authorize(permissions, [PERMISSIONS.ROLES.VIEW]) &&
                 getItem(
                     <Link to='/roles'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Roles</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'roles', language)}
+                        </div>
                     </Link>,
                     'roles'
                 ),
                 Authorize(permissions, [PERMISSIONS.DEPARTMENTS.VIEW]) &&
                 getItem(
                     <Link to='/departments'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Departments</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'departments', language)}
+                        </div>
                     </Link>,
                     'departments'
                 ),
                 Authorize(permissions, [PERMISSIONS.POSITIONS.VIEW]) &&
                 getItem(
                     <Link to='/positions'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Positions</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'positions', language)}
+                        </div>
                     </Link>,
                     'positions'
                 ),
@@ -144,49 +166,61 @@ const Sidebar = (props) => {
             PERMISSIONS.EFS_CARDS.VIEW,
         ], false) &&
         getItem(
-            'Customer Service',
+            t(translations, 'customerService', language),
             'customer_service',
             <RiCustomerService2Fill size={20} />,
             [
                 Authorize(permissions, [PERMISSIONS.COMPANIES.VIEW]) &&
                 getItem(
                     <Link to='/companies'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Companies</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'companies', language)}
+                        </div>
                     </Link>,
                     'companies'
                 ),
                 Authorize(permissions, [PERMISSIONS.COMPANY_ACCOUNTS.VIEW]) &&
                 getItem(
                     <Link to='/company-accounts'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Company Accounts</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'companyAccounts', language)}
+                        </div>
                     </Link>,
                     'company-accounts'
                 ),
                 Authorize(permissions, [PERMISSIONS.COMPANY_ACCOUNT_CARDS.VIEW]) &&
                 getItem(
                     <Link to='/company-account-cards'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Company Account Cards</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'companyAccountCards', language)}
+                        </div>
                     </Link>,
                     'company-account-cards'
                 ),
                 Authorize(permissions, [PERMISSIONS.BANK_ACCOUNTS.VIEW]) &&
                 getItem(
                     <Link to='/bank-accounts'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Bank Accounts</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'bankAccounts', language)}
+                        </div>
                     </Link>,
                     'bank-accounts'
                 ),
                 Authorize(permissions, [PERMISSIONS.BANK_CARDS.VIEW]) &&
                 getItem(
                     <Link to='/bank-cards'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Bank Cards</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'bankCards', language)}
+                        </div>
                     </Link>,
                     'bank-cards'
                 ),
                 Authorize(permissions, [PERMISSIONS.EFS_CARDS.VIEW]) &&
                 getItem(
                     <Link to='/efs-cards'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>EFS Cards</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'efsCards', language)}
+                        </div>
                     </Link>,
                     'efs-cards'
                 ),
@@ -198,21 +232,25 @@ const Sidebar = (props) => {
             PERMISSIONS.STATIONS.VIEW,
         ], false) &&
         getItem(
-            'Station Management',
+            t(translations, 'stationManagement', language),
             'station_management',
             <RiGasStationFill size={20} />,
             [
                 Authorize(permissions, [PERMISSIONS.STATION_CHAINS.VIEW]) &&
                 getItem(
                     <Link to='/station-chains'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Station chains</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'stationChains', language)}
+                        </div>
                     </Link>,
                     'station-chains'
                 ),
                 Authorize(permissions, [PERMISSIONS.STATIONS.VIEW]) &&
                 getItem(
                     <Link to='/stations'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Stations</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'stations', language)}
+                        </div>
                     </Link>,
                     'stations'
                 ),
@@ -246,21 +284,25 @@ const Sidebar = (props) => {
             PERMISSIONS.EFS_MONEY_CODES.CREATE
         ], false) &&
         getItem(
-            'Accounting',
+            t(translations, 'accounting', language),
             'accounting',
             <FaSackDollar size={18} />,
             [
                 Authorize(permissions, [PERMISSIONS.EFS_TRANSACTIONS.VIEW]) &&
                 getItem(
                     <Link to='/efs-transactions'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>EFS Transactions</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'efsTransactions', language)}
+                        </div>
                     </Link>,
                     'efs-transactions'
                 ),
                 Authorize(permissions, [PERMISSIONS.EFS_MONEY_CODES.VIEW]) &&
                 getItem(
                     <Link to='/efs-money-codes'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>EFS Money Codes</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'efsMoneyCode', language)}
+                        </div>
                     </Link>,
                     'efs-money-codes'
                 ),
@@ -284,7 +326,9 @@ const Sidebar = (props) => {
                 ], false) &&
                 getItem(
                     <Link to='/discount-management'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Discount Management</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'discountManagement', language)}
+                        </div>
                     </Link>,
                     'discount-management'
                 ),
@@ -296,14 +340,18 @@ const Sidebar = (props) => {
                   false) &&
                 getItem(
                     <Link to='/discount-management-view'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Discount Management View</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'discountManagementView', language)}
+                        </div>
                     </Link>,
                     'discount-management-view'
                 ),
                 Authorize(permissions, [PERMISSIONS.INVOICE.VIEW]) &&
                 getItem(
                     <Link to='/invoicing'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Invoicing</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'invoicing', language)}
+                        </div>
                     </Link>,
                     'invoicing'
                 ),
@@ -312,7 +360,9 @@ const Sidebar = (props) => {
                 ], true) &&
                 getItem(
                     <Link to='/invoice-groups'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Invoice Groups</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'invoiceGroups', language)}
+                        </div>
                     </Link>,
                     'invoice-groups'
                 ),
@@ -321,7 +371,9 @@ const Sidebar = (props) => {
                 ], false) &&
                 getItem(
                     <Link to='/payment-list'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Payment List</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'paymentList', language)}
+                        </div>
                     </Link>,
                     'payment-list'
                 ),
@@ -330,14 +382,18 @@ const Sidebar = (props) => {
                 ], false) &&
                 getItem(
                     <Link to='/debtors'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Debtors</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'debtors', language)}
+                        </div>
                     </Link>,
                     'debtors'
                 ),
                 Authorize(permissions, [PERMISSIONS.MONEY_CODE_FEES.VIEW]) &&
                 getItem(
                     <Link to='/money-code-fee'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Money Code Fee</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'moneyCodeFee', language)}
+                        </div>
                     </Link>,
                     'money-code-fee'
                 ),
@@ -347,14 +403,18 @@ const Sidebar = (props) => {
                 ], false) &&
                 getItem(
                     <Link to='/money-code-remaining'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Money Code Remaining</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'moneyCodeRemaining', language)}
+                        </div>
                     </Link>,
                     'money-code-remaining'
                 ),
                 Authorize(permissions, [PERMISSIONS.MAINTENANCES.VIEW,], false) &&
                 getItem(
                     <Link to='/maintenances'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Maintenance Requests</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'maintenanceRequests', language)}
+                        </div>
                     </Link>,
                     '/maintenances'
                 ),
@@ -370,56 +430,70 @@ const Sidebar = (props) => {
             PERMISSIONS.MERCHANT_FEES.VIEW
         ], false) &&
         getItem(
-            'Settings',
+            t(translations, 'settings', language),
             'settings',
             <IoSettings size={20} />,
             [
                 Authorize(permissions, [PERMISSIONS.ORGANIZATIONS.VIEW]) &&
                 getItem(
                     <Link to='/organizations'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Organizations</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'organizations', language)}
+                        </div>
                     </Link>,
                     'organizations'
                 ),
                 Authorize(permissions, [PERMISSIONS.EFS_ACCOUNTS.VIEW]) &&
                 getItem(
                     <Link to='/efs-accounts'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>EFS Accounts</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'efsAccounts', language)}
+                        </div>
                     </Link>,
                     'efs-accounts'
                 ),
                 Authorize(permissions, [PERMISSIONS.FUEL_TYPES.VIEW]) &&
                 getItem(
                     <Link to='/fuel-types'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Fuel Types</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'fuelTypes', language)}
+                        </div>
                     </Link>,
                     'fuel-types'
                 ),
                 Authorize(permissions, [PERMISSIONS.AGENTS.VIEW]) &&
                 getItem(
                     <Link to='/agents'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Agents</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'agents', language)}
+                        </div>
                     </Link>,
                     'agents'
                 ),
                 Authorize(permissions, [PERMISSIONS.EMAIL_TEMPLATES.VIEW]) &&
                 getItem(
                     <Link to='/email-templates'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Email Templates</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'emailTemplates', language)}
+                        </div>
                     </Link>,
                     'email-templates'
                 ),
                 Authorize(permissions, [PERMISSIONS.EMAIL_TEMPLATES.VIEW]) &&
                 getItem(
                     <Link to='/email-history'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Email History</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'emailHistory', language)}
+                        </div>
                     </Link>,
                     'email-history'
                 ),
                 Authorize(permissions, [PERMISSIONS.MERCHANT_FEES.VIEW]) &&
                 getItem(
                     <Link to='/merchant-fee'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Merchant Fee</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'merchantFee', language)}
+                        </div>
                     </Link>,
                     'merchant-fee'
                 ),
@@ -431,32 +505,36 @@ const Sidebar = (props) => {
             PERMISSIONS.FORMSITE.VIEW_LOGS,
         ], false) &&
         getItem(
-            'Integrations',
+            t(translations, 'integrations', language),
             'integrations',
             <MdIntegrationInstructions size={20} />,
             [
                 Authorize(permissions, [PERMISSIONS.EFS.VIEW_LOGS]) &&
                 getItem(
                     <Link to='/efs'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>EFS</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'efs', language)}
+                        </div>
                     </Link>,
                     'efs'
                 ),
                 Authorize(permissions, [PERMISSIONS.FORMSITE.VIEW_LOGS]) &&
                 getItem(
                     <Link to='/formsite'>
-                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>Formsite</div>
+                        <div className={theme && !collapsed ? 'text-[#fff]' : 'text-[#000]'}>
+                            {t(translations, 'formsite', language)}
+                        </div>
                     </Link>,
                     'formsite'
                 ),
             ]
         ),
         getItem(
-            <Link to="#" onClick={() => dispatch(userLogout())}>Log Out</Link>,
+            <Link to="#" onClick={() => dispatch(userLogout())}>{t(translations, 'logOut', language)}</Link>,
             'logout',
             <MdLogout size={20} />
         ),
-    ], [permissions, theme, collapsed, dispatch]);
+    ], [permissions, theme, collapsed, dispatch, language]);
 
     return (
         <div className={`sidebar-component ${collapsed ? 'collapsed' : ''} ${theme ? 'dark' : 'light'}`}>

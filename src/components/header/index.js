@@ -5,8 +5,12 @@ import { useDispatch } from 'react-redux';
 import { userLogout } from '../../reducers/authSlice';
 import { ThemeContext } from '../../App';
 import { useUserInfo } from '../../contexts/UserInfoContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { translations } from '../../translations';
+import { t } from '../../utils/transliteration';
 import AuthorizedView from '../authorize-view';
 import { PERMISSIONS } from '../../constants';
+import LanguageSwitcher from '../language-switcher';
 
 // Icons
 import { MdNightsStay, MdOutlineLogout, MdSpaceDashboard } from "react-icons/md";
@@ -20,10 +24,12 @@ const Header = (props) => {
     const dispatch = useDispatch();
     const { userInfo } = useUserInfo();
     const { theme, setTheme } = useContext(ThemeContext);
+    const { language } = useLanguage();
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     
     const { pathname } = useLocation();
-    const title = pathname.split('/')[1]?.split('-').join(' ') || 'Dashboard';
+    const pageKey = pathname.split('/')[1]?.split('-').join(' ') || 'dashboard';
+    const title = t(translations, pageKey, language);
     
     const toggleUserMenu = () => {
         setUserMenuOpen(!userMenuOpen);
@@ -46,7 +52,7 @@ const Header = (props) => {
                         <IoMenu size={24} />
                     </div>
                     <Link to="/">
-                        <div className="logo-text">CMP</div>
+                        <div className="logo-text">{t(translations, 'appName', language)}</div>
                     </Link>
                 </div>
                 
@@ -57,14 +63,14 @@ const Header = (props) => {
                 <div className="header-controls">
                     {/* Settings icon */}
                     <Link to="/settings">
-                        <div className="header-icon">
+                        <div className="header-icon" title={t(translations, 'settings', language)}>
                             <HiOutlineCog />
                         </div>
                     </Link>
                     
                     {/* Notifications */}
                     <Link to="/notifications">
-                        <div className="header-icon">
+                        <div className="header-icon" title={t(translations, 'notifications', language)}>
                             <FiBell />
                         </div>
                     </Link>
@@ -72,15 +78,18 @@ const Header = (props) => {
                     {/* Tasks - only visible with permission */}
                     <AuthorizedView requiredPermissions={[PERMISSIONS.TASKS.VIEW]}>
                         <Link to="/tasks">
-                            <div className="header-icon">
+                            <div className="header-icon" title={t(translations, 'tasks', language)}>
                                 <GoTasklist />
                             </div>
                         </Link>
                     </AuthorizedView>
                     
+                    {/* Language Switcher */}
+                    <LanguageSwitcher />
+                    
                     {/* Theme toggle switch */}
                     <div className="theme-switch">
-                        <label className="custom-switch">
+                        <label className="custom-switch" title={theme ? t(translations, 'lightMode', language) : t(translations, 'darkMode', language)}>
                             <input 
                                 type="checkbox" 
                                 checked={theme} 
@@ -122,27 +131,27 @@ const Header = (props) => {
                                 <Link to="/my-profile" onClick={() => setUserMenuOpen(false)}>
                                     <div className="dropdown-item">
                                         <FiUser />
-                                        <span>My Profile</span>
+                                        <span>{t(translations, 'myProfile', language)}</span>
                                     </div>
                                 </Link>
                                 
                                 <Link to="/account-settings" onClick={() => setUserMenuOpen(false)}>
                                     <div className="dropdown-item">
                                         <FiSettings />
-                                        <span>Account Settings</span>
+                                        <span>{t(translations, 'accountSettings', language)}</span>
                                     </div>
                                 </Link>
                                 
                                 <Link to="/dashboard" onClick={() => setUserMenuOpen(false)}>
                                     <div className="dropdown-item">
                                         <MdSpaceDashboard />
-                                        <span>Dashboard</span>
+                                        <span>{t(translations, 'dashboard', language)}</span>
                                     </div>
                                 </Link>
                                 
                                 <div className="dropdown-item" onClick={handleLogout}>
                                     <MdOutlineLogout />
-                                    <span>Log Out</span>
+                                    <span>{t(translations, 'logOut', language)}</span>
                                 </div>
                             </div>
                         )}

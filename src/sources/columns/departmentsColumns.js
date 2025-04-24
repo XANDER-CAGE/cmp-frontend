@@ -1,8 +1,10 @@
 import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const departmentsColumns = (pageNumber, pageSize, deleteDepartment, deleteLoading, openModal) => [
+export const departmentsColumns = (pageNumber, pageSize, deleteDepartment, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -17,7 +19,7 @@ export const departmentsColumns = (pageNumber, pageSize, deleteDepartment, delet
         checked: true,
     },
     {
-        title: `Name`,
+        title: t(translations, 'name', language),
         dataIndex: 'name',
         key: 'name',
         type: 'string',
@@ -26,7 +28,7 @@ export const departmentsColumns = (pageNumber, pageSize, deleteDepartment, delet
         checked: true,
     },
     {
-        title: `Description`,
+        title: t(translations, 'description', language),
         dataIndex: 'description',
         key: 'description',
         type: 'string',
@@ -35,7 +37,7 @@ export const departmentsColumns = (pageNumber, pageSize, deleteDepartment, delet
         checked: true,
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -46,10 +48,10 @@ export const departmentsColumns = (pageNumber, pageSize, deleteDepartment, delet
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteDepartment(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

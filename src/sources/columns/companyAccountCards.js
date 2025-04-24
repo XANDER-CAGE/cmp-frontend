@@ -3,8 +3,10 @@ import { Popconfirm } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAccountCard, deleteLoading, openModal) => [
+export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAccountCard, deleteLoading, openModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -19,7 +21,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         checked: true,
     },
     {
-        title: `Organization`,
+        title: t(translations, 'organization', language),
         dataIndex: 'companyAccount',
         key: 'organization',
         type: 'string',
@@ -29,7 +31,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         render: (row) => row?.organization?.name
     },
     {
-        title: `EFS Account`,
+        title: t(translations, 'efsAccount', language),
         dataIndex: 'companyAccount',
         key: 'efsAccount',
         type: 'string',
@@ -39,7 +41,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         render: (row) => row?.efsAccount?.name
     },
     {
-        title: `Company`,
+        title: t(translations, 'company', language),
         dataIndex: 'companyAccount',
         key: 'company',
         type: 'string',
@@ -53,17 +55,22 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         }
     },
     {
-        title: `Company Status`,
+        title: t(translations, 'companyStatus', language),
         dataIndex: 'companyAccount',
         key: 'companyStatus',
         type: 'string',
         align: 'center',
         width: 150,
         checked: true,
-        render: (row) => row?.company?.companyStatus
+        render: (row) => {
+            const status = row?.company?.companyStatus;
+            if (status === 'Active') return t(translations, 'statusActive', language);
+            if (status === 'Inactive') return t(translations, 'statusInactive', language);
+            return status;
+        }
     },
     {
-        title: `Card Number`,
+        title: t(translations, 'cardNumber', language),
         dataIndex: 'cardNumber',
         key: 'cardNumber',
         type: 'string',
@@ -72,7 +79,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         checked: true,
     },
     {
-        title: `Driver Name`,
+        title: t(translations, 'driverName', language),
         dataIndex: 'driverName',
         key: 'driverName',
         type: 'string',
@@ -81,7 +88,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         checked: true,
     },
     {
-        title: `Unit Number`,
+        title: t(translations, 'unitNumber', language),
         dataIndex: 'unitNumber',
         key: 'unitNumber',
         type: 'string',
@@ -90,16 +97,23 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         checked: true,
     },
     {
-        title: `Card Status`,
+        title: t(translations, 'cardStatus', language),
         dataIndex: 'cardStatus',
         key: 'cardStatus',
         type: 'string',
         align: 'center',
         width: 250,
         checked: true,
+        render: (status) => {
+            if (status === 'Active') return t(translations, 'statusActive', language);
+            if (status === 'Inactive') return t(translations, 'statusInactive', language);
+            if (status === 'Hold') return t(translations, 'statusHold', language);
+            if (status === 'Deleted') return t(translations, 'statusDeleted', language);
+            return status;
+        }
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -108,7 +122,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         render: (date) => <>{date ? setTashkentTime(date) : null}</>
     },
     {
-        title: `Created User`,
+        title: t(translations, 'createdUser', language),
         dataIndex: 'createdUser',
         key: 'createdUser',
         align: 'center',
@@ -116,7 +130,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         checked: true,
     },
     {
-        title: `Updated At`,
+        title: t(translations, 'updatedAt', language),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         align: 'center',
@@ -125,7 +139,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         render: (date) => <>{date ? setTashkentTime(date) : null}</>
     },
     {
-        title: `Updated User`,
+        title: t(translations, 'updatedUser', language),
         dataIndex: 'updatedUser',
         key: 'updatedUser',
         align: 'center',
@@ -133,7 +147,7 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
         checked: true,
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -144,10 +158,10 @@ export const companyAccountCardsColumns = (pageNumber, pageSize, deleteCompanyAc
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteCompanyAccountCard(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>
