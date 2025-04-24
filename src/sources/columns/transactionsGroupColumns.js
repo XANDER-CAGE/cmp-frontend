@@ -1,4 +1,7 @@
-export const transactionsGroupsColumns = (pageNumber, pageSize) => [
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
+
+export const transactionsGroupsColumns = (pageNumber, pageSize, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -13,7 +16,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Driver Name`,
+        title: t(translations, 'driverName', language),
         dataIndex: 'driverName',
         key: 'driverName',
         align: 'center',
@@ -21,7 +24,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `ULSD Quantity`,
+        title: t(translations, 'ulsdQuantity', language),
         dataIndex: 'ulsdQuantity',
         key: 'ulsdQuantity',
         align: 'center',
@@ -29,7 +32,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `DEFD Quantity`,
+        title: t(translations, 'defdQuantity', language),
         dataIndex: 'defdQuantity',
         key: 'defdQuantity',
         align: 'center',
@@ -37,7 +40,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `CADV Quantity`,
+        title: t(translations, 'cadvQuantity', language),
         dataIndex: 'cadvQuantity',
         key: 'cadvQuantity',
         align: 'center',
@@ -45,7 +48,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `CDSL Quantity`,
+        title: t(translations, 'cdslQuantity', language),
         dataIndex: 'cdslQuantity',
         key: 'cdslQuantity',
         align: 'center',
@@ -53,7 +56,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `DSL1 Quantity`,
+        title: t(translations, 'dsl1Quantity', language),
         dataIndex: 'dsl1Quantity',
         key: 'dsl1Quantity',
         align: 'center',
@@ -61,7 +64,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `FUEL Quantity`,
+        title: t(translations, 'fuelQuantity', language),
         dataIndex: 'fuelQuantity',
         key: 'fuelQuantity',
         align: 'center',
@@ -69,7 +72,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `SCLE Quantity`,
+        title: t(translations, 'scleQuantity', language),
         dataIndex: 'scleQuantity',
         key: 'scleQuantity',
         align: 'center',
@@ -77,7 +80,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `STAX Quantity`,
+        title: t(translations, 'staxQuantity', language),
         dataIndex: 'staxQuantity',
         key: 'staxQuantity',
         align: 'center',
@@ -85,7 +88,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `ULSR Quantity`,
+        title: t(translations, 'ulsrQuantity', language),
         dataIndex: 'ulsrQuantity',
         key: 'ulsrQuantity',
         align: 'center',
@@ -93,7 +96,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `ULSD Amount`,
+        title: t(translations, 'ulsdAmount', language),
         dataIndex: 'ulsdAmount',
         key: 'ulsdAmount',
         align: 'center',
@@ -101,7 +104,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `DEFD Amount`,
+        title: t(translations, 'defdAmount', language),
         dataIndex: 'defdAmount',
         key: 'defdAmount',
         align: 'center',
@@ -109,7 +112,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `CADV Amount`,
+        title: t(translations, 'cadvAmount', language),
         dataIndex: 'cadvAmount',
         key: 'cadvAmount',
         align: 'center',
@@ -117,7 +120,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `CDSL Amount`,
+        title: t(translations, 'cdslAmount', language),
         dataIndex: 'cdslAmount',
         key: 'cdslAmount',
         align: 'center',
@@ -125,7 +128,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `DSL1 Amount`,
+        title: t(translations, 'dsl1Amount', language),
         dataIndex: 'dsl1Amount',
         key: 'dsl1Amount',
         align: 'center',
@@ -133,7 +136,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `FUEL Amount`,
+        title: t(translations, 'fuelAmount', language),
         dataIndex: 'fuelAmount',
         key: 'fuelAmount',
         align: 'center',
@@ -141,7 +144,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `SCLE Amount`,
+        title: t(translations, 'scleAmount', language),
         dataIndex: 'scleAmount',
         key: 'scleAmount',
         align: 'center',
@@ -149,7 +152,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `STAX Amount`,
+        title: t(translations, 'staxAmount', language),
         dataIndex: 'staxAmount',
         key: 'staxAmount',
         align: 'center',
@@ -157,7 +160,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `ULSR Amount`,
+        title: t(translations, 'ulsrAmount', language),
         dataIndex: 'ulsrAmount',
         key: 'ulsrAmount',
         align: 'center',
@@ -165,7 +168,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Discount Amount`,
+        title: t(translations, 'discountAmount', language),
         dataIndex: 'discountAmount',
         key: 'discountAmount',
         align: 'center',
@@ -173,7 +176,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Fees`,
+        title: t(translations, 'feesAmount', language),
         dataIndex: 'feesAmount',
         key: 'feesAmount',
         align: 'center',
@@ -181,7 +184,7 @@ export const transactionsGroupsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Total`,
+        title: t(translations, 'totalAmount', language),
         dataIndex: 'totalAmount',
         key: 'totalAmount',
         align: 'center',

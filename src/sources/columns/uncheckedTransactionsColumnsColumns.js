@@ -1,6 +1,8 @@
 import { setUTCTime } from "../../utils";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
+export const uncheckedTransactionsColumns = (pageNumber, pageSize, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -15,7 +17,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Transaction Date`,
+        title: t(translations, 'transactionDate', language),
         dataIndex: 'transactionDate',
         key: 'transactionDate',
         type: 'string',
@@ -25,7 +27,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         render: (transactionDate) => setUTCTime(transactionDate, 'YYYY-MM-DD')
     },
     {
-        title: `Driver Name`,
+        title: t(translations, 'driverName', language),
         dataIndex: 'driverName',
         key: 'driverName',
         align: 'center',
@@ -33,7 +35,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `File Name`,
+        title: t(translations, 'fileName', language),
         dataIndex: 'fileName',
         key: 'fileName',
         align: 'center',
@@ -41,7 +43,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Card Number`,
+        title: t(translations, 'cardNumber', language),
         dataIndex: 'cardNumber',
         key: 'cardNumber',
         align: 'center',
@@ -49,7 +51,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Invoice Number`,
+        title: t(translations, 'invoiceNumber', language),
         dataIndex: 'invoiceNumber',
         key: 'invoiceNumber',
         align: 'center',
@@ -57,7 +59,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Unit Price`,
+        title: t(translations, 'unitPrice', language),
         dataIndex: 'unitPrice',
         key: 'unitPrice',
         align: 'center',
@@ -65,7 +67,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Fees`,
+        title: t(translations, 'fees', language),
         dataIndex: 'fees',
         key: 'fees',
         align: 'center',
@@ -73,7 +75,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Discount PPU`,
+        title: t(translations, 'discPpu', language),
         dataIndex: 'discPpu',
         key: 'discPpu',
         align: 'center',
@@ -81,7 +83,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Discount Cost`,
+        title: t(translations, 'discCost', language),
         dataIndex: 'discCost',
         key: 'discCost',
         align: 'center',
@@ -89,7 +91,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Quantity`,
+        title: t(translations, 'quantity', language),
         dataIndex: 'quantity',
         key: 'quantity',
         align: 'center',
@@ -97,7 +99,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Discount Amount`,
+        title: t(translations, 'discAmount', language),
         dataIndex: 'discAmount',
         key: 'discAmount',
         align: 'center',
@@ -105,7 +107,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Discount Type`,
+        title: t(translations, 'discType', language),
         dataIndex: 'discType',
         key: 'discType',
         align: 'center',
@@ -113,7 +115,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Amount`,
+        title: t(translations, 'amount', language),
         dataIndex: 'amount',
         key: 'amount',
         align: 'center',
@@ -121,7 +123,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `DB`,
+        title: t(translations, 'db', language),
         dataIndex: 'db',
         key: 'db',
         align: 'center',
@@ -129,7 +131,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Currency`,
+        title: t(translations, 'currency', language),
         dataIndex: 'currency',
         key: 'currency',
         align: 'center',
@@ -137,7 +139,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Odometer`,
+        title: t(translations, 'odometer', language),
         dataIndex: 'odometer',
         key: 'odometer',
         align: 'center',
@@ -145,7 +147,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `State`,
+        title: t(translations, 'state', language),
         dataIndex: 'state',
         key: 'state',
         align: 'center',
@@ -153,7 +155,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `City`,
+        title: t(translations, 'city', language),
         dataIndex: 'city',
         key: 'city',
         align: 'center',
@@ -161,7 +163,7 @@ export const uncheckedTransactionsColumns = (pageNumber, pageSize) => [
         checked: true,
     },
     {
-        title: `Location`,
+        title: t(translations, 'locationName', language),
         dataIndex: 'locationName',
         key: 'locationName',
         align: 'center',

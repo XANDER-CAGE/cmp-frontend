@@ -4,8 +4,10 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { GrAttachment } from 'react-icons/gr';
 import { IoIosSkipForward } from 'react-icons/io';
 import React from 'react';
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations, skipMoneyCode, openCompanyAttachModal) => [
+export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations, skipMoneyCode, openCompanyAttachModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -20,7 +22,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Ref No`,
+        title: t(translations, 'refNo', language),
         dataIndex: 'refNo',
         key: 'refNo',
         type: 'string',
@@ -29,7 +31,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Voide`,
+        title: t(translations, 'voide', language),
         dataIndex: 'voide',
         key: 'voide',
         align: 'center',
@@ -37,7 +39,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Issue Type`,
+        title: t(translations, 'issueType', language),
         dataIndex: 'issueType',
         key: 'issueType',
         align: 'center',
@@ -45,7 +47,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Issued By`,
+        title: t(translations, 'issuedBy', language),
         dataIndex: 'issuedBy',
         key: 'issuedBy',
         align: 'center',
@@ -53,7 +55,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Issued To`,
+        title: t(translations, 'issuedTo', language),
         dataIndex: 'issuedTo',
         key: 'issuedTo',
         align: 'center',
@@ -62,7 +64,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
 
     },
     {
-        title: `Issued Date`,
+        title: t(translations, 'issuedDate', language),
         dataIndex: 'issuedDate',
         key: 'issuedDate',
         align: 'center',
@@ -71,7 +73,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         render: (date) => setUTCTime(date)
     },
     {
-        title: `Fee`,
+        title: t(translations, 'fee', language),
         dataIndex: 'fee',
         key: 'fee',
         align: 'center',
@@ -79,7 +81,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Original Amount`,
+        title: t(translations, 'originalAmount', language),
         dataIndex: 'originalAmount',
         key: 'originalAmount',
         align: 'center',
@@ -87,7 +89,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Bill Date`,
+        title: t(translations, 'billDate', language),
         dataIndex: 'billDate',
         key: 'billDate',
         align: 'center',
@@ -96,7 +98,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         render: (date) => setUTCTime(date)
     },
     {
-        title: `Check Number`,
+        title: t(translations, 'checkNumber', language),
         dataIndex: 'checkNumber',
         key: 'checkNumber',
         align: 'center',
@@ -104,7 +106,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Date Used`,
+        title: t(translations, 'dateUsed', language),
         dataIndex: 'dateUsed',
         key: 'dateUsed',
         align: 'center',
@@ -113,7 +115,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         render: (date) => setUTCTime(date)
     },
     {
-        title: `Amount of Used`,
+        title: t(translations, 'amountOfUsed', language),
         dataIndex: 'amountOfUsed',
         key: 'amountOfUsed',
         align: 'center',
@@ -121,7 +123,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Currency`,
+        title: t(translations, 'currency', language),
         dataIndex: 'currency',
         key: 'currency',
         align: 'center',
@@ -129,7 +131,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `One Time Use`,
+        title: t(translations, 'oneTimeUse', language),
         dataIndex: 'oneTimeUse',
         key: 'oneTimeUse',
         align: 'center',
@@ -137,7 +139,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Exact Amt`,
+        title: t(translations, 'exactAmt', language),
         dataIndex: 'exactAmt',
         key: 'exactAmt',
         align: 'center',
@@ -145,7 +147,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Expire Date`,
+        title: t(translations, 'expireDate', language),
         dataIndex: 'expireDate',
         key: 'expireDate',
         align: 'center',
@@ -154,7 +156,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         render: (date) => setUTCTime(date)
     },
     {
-        title: `Phone Number`,
+        title: t(translations, 'phoneNumber', language),
         dataIndex: 'phoneNumber',
         key: 'phoneNumber',
         align: 'center',
@@ -162,7 +164,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `State`,
+        title: t(translations, 'state', language),
         dataIndex: 'state',
         key: 'state',
         align: 'center',
@@ -170,7 +172,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `City`,
+        title: t(translations, 'city', language),
         dataIndex: 'city',
         key: 'city',
         align: 'center',
@@ -178,7 +180,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Location`,
+        title: t(translations, 'locationName', language),
         dataIndex: 'locationName',
         key: 'locationName',
         align: 'center',
@@ -186,7 +188,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Contract ID`,
+        title: t(translations, 'contractId', language),
         dataIndex: 'contractId',
         key: 'contractId',
         align: 'center',
@@ -194,7 +196,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Sub Contract`,
+        title: t(translations, 'subContract', language),
         dataIndex: 'subContract',
         key: 'subContract',
         align: 'center',
@@ -202,7 +204,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `File Name`,
+        title: t(translations, 'fileName', language),
         dataIndex: 'fileName',
         key: 'fileName',
         align: 'center',
@@ -210,7 +212,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Notes`,
+        title: t(translations, 'notes', language),
         dataIndex: 'notes',
         key: 'notes',
         align: 'center',
@@ -218,7 +220,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Created User`,
+        title: t(translations, 'createdUser', language),
         dataIndex: 'createdUser',
         key: 'createdUser',
         align: 'center',
@@ -226,7 +228,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         checked: true,
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -236,7 +238,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
     },
 
     showOperations && {
-        title: `Operation`,
+        title: t(translations, 'operation', language),
         key: 'operation',
         align: 'center',
         fixed: 'right',
@@ -245,7 +247,7 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
         render: (row) => {
             return (
               <div className="flex justify-end">
-                  <Tooltip title={'Attach Company'}>
+                  <Tooltip title={t(translations, 'attachCompany', language)}>
                       <div className="icon"
                            onClick={() => openCompanyAttachModal(row?.id, row?.issuedTo, row?.attachedCompanyId, row?.attachedCompanyName, row?.attachmentType, row?.refNo)}>
                           <GrAttachment />
@@ -253,13 +255,13 @@ export const uncheckedMoneyCodesColumns = (pageNumber, pageSize, showOperations,
                   </Tooltip>
                   <Popconfirm
                     icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                    title={'Are you sure to skip?'}
+                    title={t(translations, 'areYouSureToSkip', language)}
                     onConfirm={() => skipMoneyCode(row?.id)}
-                    okText="Yes"
-                    cancelText="No"
+                    okText={t(translations, 'yes', language)}
+                    cancelText={t(translations, 'no', language)}
                     className={'shadow-lg overflow-hidden'}
                   >
-                      <Tooltip title={'Skip'}>
+                      <Tooltip title={t(translations, 'skip', language)}>
                           <div className="icon">
                               <IoIosSkipForward />
                           </div>

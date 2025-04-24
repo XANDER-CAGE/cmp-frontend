@@ -1,8 +1,10 @@
 import { setTashkentTime, setUTCTime } from '../../utils';
 import { Button, Tag } from 'antd';
 import React from 'react';
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
-export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyDetailsModal) => [
+export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyDetailsModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -17,7 +19,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Transaction Date`,
+        title: t(translations, 'transactionDate', language),
         dataIndex: ['transaction', 'transactionDate'],
         key: 'transactionDate',
         type: 'string',
@@ -27,7 +29,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         render: (transactionDate) => setUTCTime(transactionDate, 'YYYY-MM-DD')
     },
     {
-        title: `Card Number`,
+        title: t(translations, 'cardNumber', language),
         dataIndex: ['transaction','cardNumber'],
         key: 'cardNumber',
         align: 'center',
@@ -35,7 +37,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Type`,
+        title: t(translations, 'type', language),
         dataIndex: 'type',
         key: 'status',
         align: 'center',
@@ -44,18 +46,18 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         render: (status) => {
             switch (status){
                 case 'New':
-                    return <Tag color="cyan">New</Tag>
+                    return <Tag color="cyan">{t(translations, 'new', language)}</Tag>
                 case 'Resolved':
-                    return <Tag color="success">Resolved</Tag>
+                    return <Tag color="success">{t(translations, 'resolved', language)}</Tag>
                 case 'InProgress':
-                    return <Tag color="processing">InProgress</Tag>
+                    return <Tag color="processing">{t(translations, 'inProgress', language)}</Tag>
                 default:
                     return <Tag color="default">{status}</Tag>
             }
         }
     },
     {
-        title: `Invoice No.`,
+        title: t(translations, 'invoiceNumber', language),
         dataIndex: 'invoiceNumber',
         key: 'invoiceNumber',
         align: 'left',
@@ -63,7 +65,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Invoice Status`,
+        title: t(translations, 'invoiceStatus', language),
         dataIndex: 'invoiceStatus',
         key: 'invoiceStatus',
         align: 'center',
@@ -72,18 +74,18 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         render: (status) => {
             switch (status){
                 case 'Pending':
-                    return <Tag color="cyan">Pending</Tag>
+                    return <Tag color="cyan">{t(translations, 'pending', language)}</Tag>
                 case 'Paid':
-                    return <Tag color="success">Paid</Tag>
+                    return <Tag color="success">{t(translations, 'paid', language)}</Tag>
                 case 'PartiallyPaid':
-                    return <Tag color="processing">Partially Paid</Tag>
+                    return <Tag color="processing">{t(translations, 'partiallyPaid', language)}</Tag>
                 case 'NotInvoiced':
-                    return <Tag color="default">Not Invoiced</Tag>
+                    return <Tag color="default">{t(translations, 'notInvoiced', language)}</Tag>
             }
         }
     },
     {
-        title: `Quantity`,
+        title: t(translations, 'quantity', language),
         dataIndex: ['transaction','quantity'],
         key: 'quantity',
         align: 'center',
@@ -91,7 +93,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Amount`,
+        title: t(translations, 'amount', language),
         dataIndex: ['transaction','amount'],
         key: 'amount',
         align: 'center',
@@ -99,7 +101,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Organization`,
+        title: t(translations, 'organizationName', language),
         dataIndex: 'organizationName',
         key: 'organizationName',
         type: 'string',
@@ -108,7 +110,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `EFS Account`,
+        title: t(translations, 'efsAccountName', language),
         dataIndex: 'efsAccountName',
         key: 'efsAccountName',
         type: 'string',
@@ -117,7 +119,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Company`,
+        title: t(translations, 'companyName', language),
         key: 'companyName',
         type: 'string',
         align: 'center',
@@ -132,7 +134,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         }
     },
     {
-        title: `Driver Name`,
+        title: t(translations, 'driverName', language),
         dataIndex: ['transaction','driverName'],
         key: 'driverName',
         align: 'center',
@@ -140,7 +142,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Unit Number`,
+        title: t(translations, 'unitNumber', language),
         dataIndex: ['transaction','unit'],
         key: 'unit',
         align: 'center',
@@ -148,7 +150,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Invoice`,
+        title: t(translations, 'invoiceNumber', language),
         dataIndex: ['transaction','invoiceNumber'],
         key: 'invoiceNumber',
         align: 'center',
@@ -156,7 +158,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Location`,
+        title: t(translations, 'locationName', language),
         dataIndex: ['transaction','locationName'],
         key: 'locationName',
         align: 'center',
@@ -164,7 +166,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `City`,
+        title: t(translations, 'city', language),
         dataIndex: ['transaction','city'],
         key: 'city',
         align: 'center',
@@ -172,7 +174,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `State`,
+        title: t(translations, 'state', language),
         dataIndex: ['transaction','state'],
         key: 'state',
         align: 'center',
@@ -180,7 +182,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Fees`,
+        title: t(translations, 'fees', language),
         dataIndex: ['transaction','fees'],
         key: 'fees',
         align: 'center',
@@ -188,16 +190,15 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Unit Price`,
+        title: t(translations, 'unitPrice', language),
         dataIndex: ['transaction','unitPrice'],
         key: 'unitPrice',
         align: 'center',
         width: 150,
         checked: true,
     },
-
     {
-        title: `Discount PPU`,
+        title: t(translations, 'discPpu', language),
         dataIndex: ['transaction','discPpu'],
         key: 'discPpu',
         align: 'center',
@@ -205,16 +206,15 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Discount Cost`,
+        title: t(translations, 'discCost', language),
         dataIndex: ['transaction','discCost'],
         key: 'discCost',
         align: 'center',
         width: 150,
         checked: true,
     },
-
     {
-        title: `Discount Amount`,
+        title: t(translations, 'discAmount', language),
         dataIndex: ['transaction','discAmount'],
         key: 'discAmount',
         align: 'center',
@@ -222,16 +222,15 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Discount Type`,
+        title: t(translations, 'discType', language),
         dataIndex: ['transaction','discType'],
         key: 'discType',
         align: 'center',
         width: 150,
         checked: true,
     },
-
     {
-        title: `DB`,
+        title: t(translations, 'db', language),
         dataIndex: ['transaction','db'],
         key: 'db',
         align: 'center',
@@ -239,7 +238,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Currency`,
+        title: t(translations, 'currency', language),
         dataIndex: ['transaction','currency'],
         key: 'currency',
         align: 'center',
@@ -247,7 +246,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Odometer`,
+        title: t(translations, 'odometer', language),
         dataIndex: ['transaction','odometer'],
         key: 'odometer',
         align: 'center',
@@ -255,7 +254,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `File Name`,
+        title: t(translations, 'fileName', language),
         dataIndex: ['transaction','fileName'],
         key: 'fileName',
         align: 'center',
@@ -263,7 +262,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Notes`,
+        title: t(translations, 'notes', language),
         dataIndex: 'note',
         key: 'note',
         align: 'center',
@@ -271,7 +270,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Created Date`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         align: 'center',
@@ -280,7 +279,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         render: (date) => <>{setTashkentTime(date)}</>
     },
     {
-        title: `Created User`,
+        title: t(translations, 'createdUser', language),
         dataIndex: 'createdUserName',
         key: 'createdUser',
         align: 'center',
@@ -288,7 +287,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     {
-        title: `Updated Date`,
+        title: t(translations, 'updatedDate', language),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         align: 'center',
@@ -297,7 +296,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         render: (date) => <>{date ? setTashkentTime(date) : null}</>
     },
     {
-        title: `Updated User`,
+        title: t(translations, 'updatedUser', language),
         dataIndex: 'updatedUserName',
         key: 'updatedUser',
         align: 'center',
@@ -305,7 +304,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
         checked: true,
     },
     // {
-    //     title: `Operation`,
+    //     title: t(translations, 'operation', language),
     //     key: 'operation',
     //     align: 'center',
     //     fixed: 'right',
@@ -318,13 +317,13 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
     //     //             row?.suspiciousTransactionId &&
     //     //             <Popconfirm
     //     //               icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-    //     //               title={'Are you sure to detach original transaction?'}
+    //     //               title={t(translations, 'areYouSureToDetachOriginalTransaction', language)}
     //     //               onConfirm={() => detachTransaction(row?.id)}
-    //     //               okText="Yes"
-    //     //               cancelText="No"
+    //     //               okText={t(translations, 'yes', language)}
+    //     //               cancelText={t(translations, 'no', language)}
     //     //               className={'shadow-lg overflow-hidden'}
     //     //             >
-    //     //                 <Tooltip title={'Detach Original Transaction'}>
+    //     //                 <Tooltip title={t(translations, 'detachOriginalTransaction', language)}>
     //     //                     <div className="icon">
     //     //                         <GrDetach />
     //     //                     </div>
@@ -334,7 +333,7 @@ export const suspiciousTransactionsColumns = (pageNumber, pageSize, openCompanyD
     //     //
     //     //           {
     //     //            row.suspiciousTransactionId === null &&
-    //     //             <Tooltip title={'Attach Original Transaction'}>
+    //     //             <Tooltip title={t(translations, 'attachOriginalTransaction', language)}>
     //     //                 <div className="icon"
     //     //                      onClick={() => openAttachTransactionModal(row?.id)}>
     //     //                     <GrAttachment />

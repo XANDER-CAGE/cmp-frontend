@@ -2,6 +2,8 @@ import { Popconfirm, Tag } from "antd"
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { MdEdit, MdOutlineDelete } from "react-icons/md";
 import { setTashkentTime } from "../../utils";
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
 const setTagColor = (type) => {
     switch (type) {
@@ -26,7 +28,7 @@ const setTagColor = (type) => {
     }
 }
 
-export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, openModal, openStatusModal) => [
+export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, openModal, openStatusModal, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -41,7 +43,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Task Number`,
+        title: t(translations, 'taskNumber', language),
         dataIndex: 'taskNumber',
         key: 'taskNumber',
         type: 'string',
@@ -50,7 +52,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Title`,
+        title: t(translations, 'title', language),
         dataIndex: 'title',
         key: 'title',
         type: 'string',
@@ -59,7 +61,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Description`,
+        title: t(translations, 'description', language),
         dataIndex: 'description',
         key: 'description',
         type: 'string',
@@ -68,7 +70,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Status`,
+        title: t(translations, 'status', language),
         key: 'status',
         type: 'string',
         align: 'center',
@@ -78,7 +80,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
                     color={setTagColor(row?.status)}
                     onClick={() => openStatusModal(row?.status, row?.id)}
                     style={{ cursor: 'pointer' }}
-                    title="Change Status"
+                    title={t(translations, 'changeStatus', language)}
                 >
                     {row?.status}
                 </Tag>
@@ -88,7 +90,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Priority`,
+        title: t(translations, 'priority', language),
         dataIndex: 'priority',
         key: 'priority',
         type: 'string',
@@ -102,7 +104,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Due Date`,
+        title: t(translations, 'dueDate', language),
         key: 'dueDate',
         type: 'string',
         align: 'center',
@@ -113,7 +115,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Assigned User`,
+        title: t(translations, 'assignedUser', language),
         dataIndex: 'assignedUserName',
         key: 'assignedUserName',
         type: 'string',
@@ -122,7 +124,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Watchers`,
+        title: t(translations, 'watchers', language),
         dataIndex: 'watchers',
         key: 'watchers',
         type: 'string',
@@ -140,7 +142,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Completed Date`,
+        title: t(translations, 'completedDate', language),
         dataIndex: 'completedDate',
         key: 'completedDate',
         type: 'string',
@@ -152,7 +154,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Completed User`,
+        title: t(translations, 'completedUser', language),
         dataIndex: 'completedUserName',
         key: 'completedUserName',
         type: 'string',
@@ -164,7 +166,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Updated Date`,
+        title: t(translations, 'updatedDate', language),
         dataIndex: 'updatedAt',
         key: 'updatedAt',
         type: 'string',
@@ -176,7 +178,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Updated User`,
+        title: t(translations, 'updatedUser', language),
         dataIndex: 'updatedUserName',
         key: 'updatedUserName',
         type: 'string',
@@ -188,7 +190,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Created At`,
+        title: t(translations, 'createdAt', language),
         dataIndex: 'createdAt',
         key: 'createdAt',
         type: 'string',
@@ -198,7 +200,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Created By`,
+        title: t(translations, 'createdBy', language),
         dataIndex: 'createdUserName',
         key: 'createdUserName',
         type: 'string',
@@ -207,7 +209,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Cancelled Date`,
+        title: t(translations, 'cancelledDate', language),
         dataIndex: 'cancelledAt',
         key: 'cancelledAt',
         type: 'string',
@@ -219,7 +221,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Cancelled User`,
+        title: t(translations, 'cancelledUser', language),
         dataIndex: 'cancelledUserName',
         key: 'cancelledUserName',
         type: 'string',
@@ -231,7 +233,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Cancelled Reason`,
+        title: t(translations, 'cancelledReason', language),
         dataIndex: 'cancelledReason',
         key: 'cancelledReason',
         type: 'string',
@@ -243,7 +245,7 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
         checked: true,
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -254,10 +256,10 @@ export const tasksColumns = (pageNumber, pageSize, deleteTask, deleteLoading, op
                     <Popconfirm
                         isLoading={deleteLoading}
                         icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        title={'Are you sure to delete?'}
+                        title={t(translations, 'areYouSureToDelete', language)}
                         onConfirm={() => deleteTask(row?.id)}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t(translations, 'yes', language)}
+                        cancelText={t(translations, 'no', language)}
                         className={'shadow-lg overflow-hidden'}
                     >
                         <div className='icon'>

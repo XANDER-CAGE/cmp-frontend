@@ -13,26 +13,28 @@ import { setTashkentTime } from '../../utils';
 import { useState } from 'react';
 import Authorize from '../../utils/Authorize';
 import { PERMISSIONS } from '../../constants';
+import { translations } from "../../translations";
+import { t } from "../../utils/transliteration";
 
 const UserActionDropDownMenu = (
-  { row, deleteUser, deleteLoading, openEditModal, showPassword, onOpenResetPasswordModal, userPermissions, updateUserStatus, updateStatusLoading }) => {
+  { row, deleteUser, deleteLoading, openEditModal, showPassword, onOpenResetPasswordModal, userPermissions, updateUserStatus, updateStatusLoading, language = 'en' }) => {
     const [openMenu, setOpenMenu] = useState(false);
 
     return (
       <Dropdown menu={{
           items: [
               Authorize(userPermissions, [PERMISSIONS.USERS.EDIT]) &&{
-                  label: 'Edit',
+                  label: t(translations, 'edit', language),
                   key: 'edit',
                   icon: <MdEdit size={18} />,
               },
               Authorize(userPermissions, [PERMISSIONS.USERS.SHOW_PASSWORD]) && {
-                  label: 'Show Password',
+                  label: t(translations, 'showPassword', language),
                   key: 'showPassword',
                   icon: <MdRemoveRedEye size={18} />,
               },
               Authorize(userPermissions, [PERMISSIONS.USERS.CHANGE_PASSWORD]) && {
-                  label: 'Reset Password',
+                  label: t(translations, 'resetPassword', language),
                   key: 'resetPassword',
                   icon: <MdPassword size={18} />,
               },
@@ -47,15 +49,15 @@ const UserActionDropDownMenu = (
                     <Popconfirm
                       isLoading={updateStatusLoading}
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      title={'Are you sure to activate?'}
+                      title={t(translations, 'areYouSureToActivate', language)}
                       onConfirm={() => {
                           updateUserStatus(row?.id, 'Active');
                           setOpenMenu(false);
                       }}
-                      okText="Yes"
-                      cancelText="No"
+                      okText={t(translations, 'yes', language)}
+                      cancelText={t(translations, 'no', language)}
                     >
-                        <div>Activate</div>
+                        <div>{t(translations, 'activate', language)}</div>
                     </Popconfirm>
                   ),
                   key: 'activate',
@@ -69,15 +71,15 @@ const UserActionDropDownMenu = (
                     <Popconfirm
                       isLoading={updateStatusLoading}
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      title={'Are you sure to deactivate?'}
+                      title={t(translations, 'areYouSureToDeactivate', language)}
                       onConfirm={() => {
                           updateUserStatus(row?.id, 'Inactive');
                           setOpenMenu(false);
                       }}
-                      okText="Yes"
-                      cancelText="No"
+                      okText={t(translations, 'yes', language)}
+                      cancelText={t(translations, 'no', language)}
                     >
-                        <div>Deactivate</div>
+                        <div>{t(translations, 'deactivate', language)}</div>
                     </Popconfirm>
                   ),
                   key: 'deactivate',
@@ -89,15 +91,15 @@ const UserActionDropDownMenu = (
                     <Popconfirm
                       isLoading={deleteLoading}
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      title={'Are you sure to delete?'}
+                      title={t(translations, 'areYouSureToDelete', language)}
                       onConfirm={() => {
                           deleteUser(row?.id);
                           setOpenMenu(false);
                       }}
-                      okText="Yes"
-                      cancelText="No"
+                      okText={t(translations, 'yes', language)}
+                      cancelText={t(translations, 'no', language)}
                     >
-                        <div>Delete</div>
+                        <div>{t(translations, 'delete', language)}</div>
                     </Popconfirm>
                   ),
                   key: 'delete',
@@ -136,7 +138,7 @@ const UserActionDropDownMenu = (
     );
 };
 
-export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, openEditModal, getPassword, onOpenResetPasswordModal, permissions, updateUserStatus, updateStatusLoading) => [
+export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, openEditModal, getPassword, onOpenResetPasswordModal, permissions, updateUserStatus, updateStatusLoading, language = 'en') => [
     {
         title: `#`,
         key: 'numberOfRow',
@@ -151,7 +153,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
     },
     {
-        title: `Name`,
+        title: t(translations, 'name', language),
         key: 'name',
         type: 'string',
         align: 'center',
@@ -164,7 +166,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         }
     },
     {
-        title: `Username`,
+        title: t(translations, 'username', language),
         dataIndex: 'username',
         key: 'username',
         type: 'string',
@@ -173,7 +175,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
     },
     {
-        title: `Email`,
+        title: t(translations, 'email', language),
         dataIndex: 'email',
         key: 'email',
         type: 'string',
@@ -182,7 +184,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
     },
     {
-        title: `Status`,
+        title: t(translations, 'userStatus', language),
         dataIndex: 'userStatus',
         key: 'userStatus',
         type: 'string',
@@ -191,12 +193,12 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
         render: (data) => (
             data === 'Active' ?
-              <Tag color="success">Active</Tag> :
-              <Tag color="error">Inactive</Tag>
+              <Tag color="success">{t(translations, 'active', language)}</Tag> :
+              <Tag color="error">{t(translations, 'inactive', language)}</Tag>
         )
     },
     {
-        title: `Roles`,
+        title: t(translations, 'roles', language),
         dataIndex: 'roles',
         key: 'roles',
         type: 'string',
@@ -212,7 +214,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
     },
     {
-        title: `Phone`,
+        title: t(translations, 'phoneNumber', language),
         dataIndex: 'phoneNumber',
         key: 'phoneNumber',
         type: 'string',
@@ -221,7 +223,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
     },
     {
-        title: `Department`,
+        title: t(translations, 'department', language),
         dataIndex: 'department',
         key: 'department',
         type: 'string',
@@ -231,7 +233,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         render: (data) =>(<> {data?.name} </>)
     },
     {
-        title: `Position`,
+        title: t(translations, 'position', language),
         dataIndex: 'position',
         key: 'position',
         type: 'string',
@@ -241,7 +243,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         render: (data) =>(<> {data?.name} </>)
     },
     {
-        title: `Added On`,
+        title: t(translations, 'createdOnUtc', language),
         dataIndex: 'createdOnUtc',
         key: 'createdOnUtc',
         type: 'date',
@@ -255,7 +257,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         }
     },
     {
-        title: `Added By`,
+        title: t(translations, 'createdByName', language),
         dataIndex: 'createdByName',
         key: 'createdByName',
         type: 'string',
@@ -264,7 +266,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
     },
     {
-        title: `Updated On`,
+        title: t(translations, 'lastModifiedOnUtc', language),
         dataIndex: 'lastModifiedOnUtc',
         key: 'lastModifiedOnUtc',
         type: 'date',
@@ -278,7 +280,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         }
     },
     {
-        title: `Updated By`,
+        title: t(translations, 'lastModifiedByName', language),
         dataIndex: 'lastModifiedByName',
         key: 'lastModifiedByName',
         type: 'string',
@@ -287,7 +289,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
         checked: true,
     },
     {
-        title: `Operations`,
+        title: t(translations, 'operations', language),
         key: 'operations',
         fixed: 'right',
         align: 'center',
@@ -303,6 +305,7 @@ export const usersColumns = (pageNumber, pageSize, deleteUser, deleteLoading, op
             userPermissions={permissions}
             updateUserStatus={updateUserStatus}
             updateStatusLoading={updateStatusLoading}
+            language={language}
           />,
         checked: true,
     },
