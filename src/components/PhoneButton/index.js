@@ -1,161 +1,199 @@
-// src/components/PhoneButton/index.js
+// src/components/PhoneButton.js
 import React, { useState } from 'react';
-import { Button, Modal, Form, Input, Space, Tooltip, Badge } from 'antd';
-import { PhoneOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons';
-import { MdCopyAll } from 'react-icons/md';
-import { useRingCentral } from '../../contexts/RingCentralContext';
-import { useLanguage } from '../../contexts/LanguageContext';
-import { translations } from '../../translations';
-import { t } from '../../utils/transliteration';
-import { toast } from 'react-toastify';
-import './phone-button.css';
+import { Button, Tooltip, Popover, Badge, Space } from 'antd';
+import { 
+  PhoneOutlined, 
+  CloseCircleOutlined, 
+  PauseCircleOutlined,
+  PlayCircleOutlined,
+  LoadingOutlined
+} from '@ant-design/icons';
+import { useRingCentral } from '../contexts/RingCentralContext';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations';
+import { t } from '../utils/transliteration';
 
-const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) => {
+const PhoneButton = ({ phoneNumber, size = 'default', showText = false }) => {
   const { language } = useLanguage();
-  const { authenticated, loading, callLoading, login, logout, call } = useRingCentral();
-  const [callModalVisible, setCallModalVisible] = useState(false);
-  const [form] = Form.useForm();
+  const { 
+    isConnected, 
+    makeCall, 
+    endCall, 
+    holdCall, 
+    unholdCall,
+    callStatus, 
+    isLoading 
+  } = useRingCentral();
+  
+  const [sessionId, setSessionId] = useState(null);
+  const [partyId, setPartyId] = useState(null);
+  const [showPopover, setShowPopover] = useState(false);
 
-  const handleCall = async (phoneNum = phoneNumber) => {
-    if (!authenticated) {
-      // Если не авторизован, запускаем процесс авторизации
-      login();
+  // Find if there's an existing call with this phone number
+  const findActiveCall = () => {
+    if (!callStatus || !phoneNumber) return null;
+    
+    const activeSessionId = Object.keys(callStatus).find(sid => 
+      callStatus[sid].phoneNumber === phoneNumber
+    );
+    
+    return activeSessionId ? { sessionId: activeSessionId, status: callStatus[activeSessionId] } : null;
+  };
+
+  const activeCall = findActiveCall();
+  
+  // Handle making a call
+  const handleCall = async () => {
+    if (!isConnected) {
       return;
     }
 
-    if (!phoneNum) {
-      setCallModalVisible(true);
-      return;
-    }
-
-    try {
-      await call(phoneNum);
-    } catch (error) {
-      console.error('Ошибка вызова:', error);
-    }
-  };
-
-  const handleCopyNumber = () => {
-    if (phoneNumber) {
-      navigator.clipboard.writeText(phoneNumber);
-      toast.success(t(translations, 'ringcentralNumberCopied', language));
+    if (activeCall) {
+      // If there's already a call to this number, show popover with call controls
+      setSessionId(activeCall.sessionId);
+      setShowPopover(true);
+    } else {
+      // Otherwise, initiate a new call
+      const newSessionId = await makeCall(phoneNumber);
+      if (newSessionId) {
+        setSessionId(newSessionId);
+        setPartyId(`${newSessionId}-1`); // Typically, the first party ID
+        setShowPopover(true);
+      }
     }
   };
 
-  // Call form submit
-  const handleCallFormSubmit = async (values) => {
-    await handleCall(values.phoneNumber);
-    setCallModalVisible(false);
+  // Handle ending a call
+  const handleEndCall = async () => {
+    if (sessionId) {
+      await endCall(sessionId);
+      setSessionId(null);
+      setPartyId(null);
+      setShowPopover(false);
+    }
   };
 
-  // Format phone number for display
-  const formatPhoneNumber = (number) => {
-    if (!number) return '';
+  // Handle putting a call on hold
+  const handleHoldCall = async () => {
+    if (sessionId && partyId) {
+      await holdCall(sessionId, partyId);
+    }
+  };
+
+  // Handle taking a call off hold
+  const handleUnholdCall = async () => {
+    if (sessionId && partyId) {
+      await unholdCall(sessionId, partyId);
+    }
+  };
+
+  // Get call status for display
+  const getCallStatusDisplay = () => {
+    if (!activeCall) return null;
     
-    // Simple formatting for display
-    const cleaned = number.replace(/\D/g, '');
-    
-    // Format based on length
-    if (cleaned.length === 10) {
-      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
-    } else if (cleaned.length === 11 && cleaned.startsWith('1')) {
-      return `+1 (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7)}`;
+    const status = activeCall.status.status;
+    switch (status) {
+      case 'Setup':
+        return t(translations, 'calling', language);
+      case 'Proceeding':
+        return t(translations, 'connecting', language);
+      case 'Answered':
+      case 'Active':
+        return t(translations, 'inCall', language);
+      case 'Hold':
+        return t(translations, 'onHold', language);
+      default:
+        return status;
     }
-    
-    return number; // Return original if no formatting applied
   };
+
+  // Determine button appearance based on call status
+  const getButtonType = () => {
+    if (!isConnected) return 'default';
+    if (activeCall) {
+      const status = activeCall.status.status;
+      if (status === 'Hold') return 'default';
+      return 'primary';
+    }
+    return 'primary';
+  };
+
+  // Call control popover content
+  const popoverContent = (
+    <Space direction="vertical" size="small">
+      <div>{t(translations, 'callStatus', language)}: <strong>{getCallStatusDisplay()}</strong></div>
+      <Space>
+        {activeCall && activeCall.status.status === 'Hold' ? (
+          <Button 
+            type="primary" 
+            icon={<PlayCircleOutlined />} 
+            onClick={handleUnholdCall}
+            size="small"
+          >
+            {t(translations, 'resume', language)}
+          </Button>
+        ) : (
+          <Button 
+            icon={<PauseCircleOutlined />} 
+            onClick={handleHoldCall}
+            size="small"
+            disabled={!activeCall || ['Setup', 'Proceeding'].includes(activeCall.status.status)}
+          >
+            {t(translations, 'hold', language)}
+          </Button>
+        )}
+        <Button 
+          danger 
+          icon={<CloseCircleOutlined />} 
+          onClick={handleEndCall}
+          size="small"
+        >
+          {t(translations, 'end', language)}
+        </Button>
+      </Space>
+    </Space>
+  );
+
+  // For cases when telephony is not connected
+  if (!isConnected) {
+    return (
+      <Tooltip title={t(translations, 'telephonyNotAvailable', language)}>
+        <Button 
+          type="default" 
+          icon={<PhoneOutlined />} 
+          size={size}
+          disabled
+        >
+          {showText && t(translations, 'call', language)}
+        </Button>
+      </Tooltip>
+    );
+  }
 
   return (
-    <div className={`phone-button-container ${containerClassName}`}>
-      <Space size="small">
-        <Tooltip title={t(translations, 'ringcentralCall', language)}>
-          <Badge dot={authenticated} color="green">
-            <Button
-              type="primary"
-              size={size}
-              icon={<PhoneOutlined />}
-              onClick={() => handleCall()}
-              loading={callLoading}
-              className="phone-call-button"
-            />
-          </Badge>
-        </Tooltip>
-        
-        {phoneNumber && (
-          <Tooltip title={t(translations, 'ringcentralCopyNumber', language)}>
-            <Button
-              size={size}
-              icon={<MdCopyAll />}
-              onClick={handleCopyNumber}
-              className="phone-copy-button"
-            />
-          </Tooltip>
-        )}
-        
-        {authenticated && (
-          <Tooltip title={t(translations, 'ringcentralDisconnect', language)}>
-            <Button
-              size={size}
-              danger
-              icon={<LogoutOutlined />}
-              onClick={logout}
-              loading={loading}
-              className="phone-logout-button"
-            />
-          </Tooltip>
-        )}
-        
-        {!authenticated && (
-          <Tooltip title={t(translations, 'ringcentralLogin', language)}>
-            <Button
-              size={size}
-              icon={<LoginOutlined />}
-              onClick={login}
-              loading={loading}
-              className="phone-login-button"
-            />
-          </Tooltip>
-        )}
-      </Space>
-
-      {/* Call Modal */}
-      <Modal
-        title={t(translations, 'ringcentralMakeCall', language)}
-        open={callModalVisible}
-        onCancel={() => setCallModalVisible(false)}
-        footer={null}
-        destroyOnClose
-        maskClosable={!callLoading}
-        closable={!callLoading}
-      >
-        <Form
-          layout="vertical"
-          onFinish={handleCallFormSubmit}
-          initialValues={{ phoneNumber: phoneNumber ? formatPhoneNumber(phoneNumber) : '' }}
+    <Popover
+      content={popoverContent}
+      title={
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>{t(translations, 'callControls', language)}</span>
+          <span>{phoneNumber}</span>
+        </div>
+      }
+      trigger="click"
+      open={showPopover && !!sessionId}
+      onOpenChange={setShowPopover}
+    >
+      <Badge dot={!!activeCall} offset={[-5, 0]}>
+        <Button
+          type={getButtonType()}
+          icon={isLoading ? <LoadingOutlined /> : <PhoneOutlined />}
+          onClick={handleCall}
+          size={size}
         >
-          <Form.Item
-            name="phoneNumber"
-            label={t(translations, 'ringcentralEnterNumber', language)}
-            rules={[{ 
-              required: true, 
-              message: t(translations, 'ringcentralPhoneNumberRequired', language) 
-            }]}
-          >
-            <Input 
-              placeholder={t(translations, 'ringcentralEnterNumber', language)} 
-              disabled={callLoading}
-              autoComplete="off"
-            />
-          </Form.Item>
-          
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={callLoading} block>
-              {t(translations, 'ringcentralCall', language)}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-    </div>
+          {showText && t(translations, 'call', language)}
+        </Button>
+      </Badge>
+    </Popover>
   );
 };
 

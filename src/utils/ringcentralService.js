@@ -51,16 +51,26 @@ export const handleAuthRedirect = async () => {
             throw new Error('Код авторизации не найден в URL');
         }
         
-        // Логин с использованием кода авторизации
-        await platform.login({ code });
+        // Логин с использованием кода авторизации и PKCE
+        const tokenResponse = await platform.login({ code });
         
-        // Возвращаем данные авторизации
-        return platform.auth().data();
+        // Проверяем и возвращаем данные авторизации
+        const authData = platform.auth().data();
+        
+        console.log('Token data:', JSON.stringify(authData, null, 2));
+        
+        if (!authData.refresh_token) {
+            console.warn('Предупреждение: refresh_token отсутствует в ответе авторизации');
+        }
+        
+        return authData;
     } catch (error) {
         console.error('Ошибка обработки авторизации:', error);
         throw error;
     }
 };
+
+
 
 // Обновление токена из cookies
 export const restoreAuthFromCookies = async () => {
