@@ -1,4 +1,4 @@
-// src/pages/companies/index.js - with RingCentral telephony integration
+// src/pages/companies/index.js - with trusted/not trusted and phone dialer removed
 import React, { useEffect, useMemo, useState } from 'react';
 import http from '../../utils/axiosInterceptors';
 import { 
@@ -30,8 +30,6 @@ import {
   DeleteOutlined,
   FilterOutlined,
   ShopOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
   BankOutlined,
   SyncOutlined
 } from '@ant-design/icons';
@@ -39,8 +37,6 @@ import { useLocalStorageState } from 'ahooks';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { translations } from '../../translations';
 import { t } from '../../utils/transliteration';
-import PhoneButton from '../../components/PhoneButton';
-import RingCentralStatus from '../../components/RingCentralStatus';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -66,7 +62,6 @@ const Companies = () => {
   const [efsAccounts, setEfsAccounts] = useState([]);
   const [efsAccountId, setEfsAccountId] = useLocalStorageState("companies-EfsAccountId", { defaultValue: null });
   const [billingCycle, setBillingCycle] = useLocalStorageState("companies-billingCycle", { defaultValue: null });
-  const [isTrusted, setIsTrusted] = useLocalStorageState("companies-isTrusted", { defaultValue: null });
   const [companyStatus, setCompanyStatus] = useLocalStorageState("companies-companyStatus", { defaultValue: null });
   const [missingStatus, setMissingStatus] = useLocalStorageState("companies-missingStatus", { defaultValue: null });
 
@@ -148,11 +143,10 @@ const Companies = () => {
       organizationId,
       efsAccountId,
       billingCycle,
-      isTrusted,
       companyStatus,
       missingStatus
     };
-  }, [pageNumber, pageSize, searchTerm, organizationId, efsAccountId, billingCycle, isTrusted, companyStatus, missingStatus]);
+  }, [pageNumber, pageSize, searchTerm, organizationId, efsAccountId, billingCycle, companyStatus, missingStatus]);
 
   // Calculate active filter count
   const activeFilterCount = useMemo(() => {
@@ -160,18 +154,16 @@ const Companies = () => {
     if (organizationId) count++;
     if (efsAccountId) count++;
     if (billingCycle) count++;
-    if (isTrusted !== null) count++;
     if (companyStatus) count++;
     if (missingStatus) count++;
     return count;
-  }, [organizationId, efsAccountId, billingCycle, isTrusted, companyStatus, missingStatus]);
+  }, [organizationId, efsAccountId, billingCycle, companyStatus, missingStatus]);
 
   // Clear all filters
   const clearAllFilters = () => {
     setOrganizationId(null);
     setEfsAccountId(null);
     setBillingCycle(null);
-    setIsTrusted(null);
     setCompanyStatus(null);
     setMissingStatus(null);
   };
@@ -179,11 +171,11 @@ const Companies = () => {
   useEffect(() => {
     getCompanies();
     // eslint-disable-next-line
-  }, [pageNumber, pageSize, searchTerm, organizationId, efsAccountId, billingCycle, isTrusted, companyStatus, missingStatus]);
+  }, [pageNumber, pageSize, searchTerm, organizationId, efsAccountId, billingCycle, companyStatus, missingStatus]);
 
   useEffect(() => {
     setPageNumber(1);
-  }, [searchTerm, organizationId, efsAccountId, billingCycle, isTrusted, companyStatus, missingStatus]);
+  }, [searchTerm, organizationId, efsAccountId, billingCycle, companyStatus, missingStatus]);
 
   useEffect(() => {
     getOrganizations();
@@ -225,28 +217,55 @@ const Companies = () => {
       render: (_, record) => (
         <Space direction="vertical" size="small" className="w-full">
           {record.email && (
-            <div className="flex items-center justify-between">
+            <div className="flex items-center">
               <Text type="secondary">
                 <span role="img" aria-label="mail" className="mr-1">✉️</span> {record.email}
               </Text>
             </div>
           )}
+          {record.emails && record.emails.length > 0 && record.emails.map((email, index) => (
+            <div key={index} className="flex items-center">
+              <Text type="secondary">
+                <span role="img" aria-label="mail" className="mr-1">✉️</span> {email}
+              </Text>
+            </div>
+          ))}
           {record.phoneNumbers && record.phoneNumbers.length > 0 && record.phoneNumbers.map((phone, index) => (
-            <div key={index} className="flex items-center justify-between phone-number-display">
-              <Text type="secondary" className="phone-number-text">
+            <div key={index} className="flex items-center">
+              <Text type="secondary">
                 <span role="img" aria-label="phone" className="mr-1">📞</span> {phone}
               </Text>
-              <PhoneButton phoneNumber={phone} />
             </div>
           ))}
           {(!record.phoneNumbers || record.phoneNumbers.length === 0) && record.phone && (
-            <div className="flex items-center justify-between phone-number-display">
-              <Text type="secondary" className="phone-number-text">
+            <div className="flex items-center">
+              <Text type="secondary">
                 <span role="img" aria-label="phone" className="mr-1">📞</span> {record.phone}
               </Text>
-              <PhoneButton phoneNumber={record.phone} />
             </div>
           )}
+        </Space>
+      ),
+    },
+    {
+      title: t(translations, 'address', language),
+      dataIndex: 'address',
+      key: 'address',
+      render: (address) => (
+        <Text type="secondary">{address || '-'}</Text>
+      ),
+    },
+    {
+      title: t(translations, 'ownerNames', language),
+      dataIndex: 'ownerNames',
+      key: 'ownerNames',
+      render: (ownerNames) => (
+        <Space direction="vertical" size="small">
+          {ownerNames && ownerNames.length > 0 ? 
+            ownerNames.map((owner, index) => (
+              <Text key={index} type="secondary">{owner}</Text>
+            )) : '-'
+          }
         </Space>
       ),
     },
@@ -261,26 +280,15 @@ const Companies = () => {
     },
     {
       title: t(translations, 'status', language),
-      dataIndex: 'status',
+      dataIndex: 'companyStatus',
       key: 'status',
-      render: (_, record) => (
-        <Space direction="vertical" size="small">
-          <Badge
-            status={record.companyStatus === 'Active' ? 'success' : 'error'}
-            text={record.companyStatus === 'Active' 
-              ? t(translations, 'statusActive', language) 
-              : t(translations, 'statusInactive', language)}
-          />
-          {record.isTrusted !== undefined && (
-            <Tag color={record.isTrusted ? 'green' : 'red'} className="ml-0">
-              {record.isTrusted ? (
-                <span><CheckCircleOutlined /> {t(translations, 'trusted', language)}</span>
-              ) : (
-                <span><CloseCircleOutlined /> {t(translations, 'notTrusted', language)}</span>
-              )}
-            </Tag>
-          )}
-        </Space>
+      render: (status) => (
+        <Badge
+          status={status === 'Active' ? 'success' : 'error'}
+          text={status === 'Active' 
+            ? t(translations, 'statusActive', language) 
+            : t(translations, 'statusInactive', language)}
+        />
       ),
     },
     {
@@ -346,10 +354,7 @@ const Companies = () => {
     >
       <Space direction="vertical" size="middle" className="w-full">
         <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <Title level={4} style={{ margin: 0 }}>{t(translations, 'companies', language)}</Title>
-            <RingCentralStatus />
-          </div>
+          <Title level={4} style={{ margin: 0 }}>{t(translations, 'companies', language)}</Title>
           <Space>
             <Input.Search
               placeholder={t(translations, 'searchCompanies', language)}
@@ -458,20 +463,6 @@ const Companies = () => {
                     }
                     value={billingCycle}
                     onChange={(e) => setBillingCycle(e)}
-                  />
-                </Col>
-                <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                  <Text strong className="block mb-1">{t(translations, 'trustedStatus', language)}</Text>
-                  <Select
-                    className="w-full"
-                    placeholder={t(translations, 'isTrusted', language)}
-                    options={[
-                      { value: true, label: t(translations, 'yes', language) },
-                      { value: false, label: t(translations, 'no', language) }
-                    ]}
-                    allowClear
-                    value={isTrusted}
-                    onChange={(e) => setIsTrusted(e)}
                   />
                 </Col>
                 <Col xs={24} sm={12} md={8} lg={8} xl={8}>
