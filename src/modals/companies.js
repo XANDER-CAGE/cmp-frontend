@@ -1,3 +1,4 @@
+// src/modals/companies.js - with RingCentral telephony integration
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -6,10 +7,14 @@ import { toast } from 'react-toastify'
 import { css } from '@emotion/react';
 import { makeOptions } from '../utils';
 import { MdCopyAll } from 'react-icons/md';
+import PhoneButton from '../components/PhoneButton';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations';
+import { t } from '../utils/transliteration';
 
 const CompaniesModal = (props) => {
-    const { isOpenModal, getCompanies, closeModal, editId } = props
-
+    const { isOpenModal, getCompanies, closeModal, editId, language } = props
+    
     const [form] = Form.useForm()
 
     const [submitLoading, setSubmitLoading] = useState(false)
@@ -85,7 +90,7 @@ const CompaniesModal = (props) => {
             open={isOpenModal}
             centered
             width={1000}
-            title={`${editId ? "Edit" : "Add"} Company`}
+            title={`${editId ? t(translations, 'edit', language) : t(translations, 'add', language)} ${t(translations, 'company', language)}`}
             footer={[]}
             closeIcon={null}
         >
@@ -116,30 +121,30 @@ const CompaniesModal = (props) => {
                 >
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Name"
+                            label={t(translations, 'name', language)}
                             name="name"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input name!',
+                                    message: t(translations, 'pleaseInputName', language),
                                 },
                             ]}
                         >
-                            <Input placeholder='Name' />
+                            <Input placeholder={t(translations, 'name', language)} />
                         </Form.Item>
                     </Col>
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Description"
+                            label={t(translations, 'description', language)}
                             name="description"
                         >
-                            <Input.TextArea placeholder='Description' />
+                            <Input.TextArea placeholder={t(translations, 'description', language)} />
                         </Form.Item>
                     </Col>
 
                     <Col lg={12} xs={24}>
-                        <label className={'mt-2 mb-2 block'}>Owner Names</label>
+                        <label className={'mt-2 mb-2 block'}>{t(translations, 'ownerNames', language)}</label>
                         <Form.List key="ownerNames" name="ownerNames">
                             {(listFields, { add, remove }, { errors }) => (
                                 <>
@@ -158,7 +163,7 @@ const CompaniesModal = (props) => {
                                                 <Input
                                                     type='text'
                                                     className="my-0 mr-2"
-                                                    placeholder="Phone number"
+                                                    placeholder={t(translations, 'ownerName', language)}
                                                     style={{ width: 'calc(100% - 30px)' }}
                                                 />
                                             </Form.Item>
@@ -173,7 +178,7 @@ const CompaniesModal = (props) => {
 
                                     <Form.Item className={'mb-2'}>
                                         <Button type="dashed" onClick={() => add()} style={{ width: '150px' }} icon={<PlusOutlined />}>
-                                            Add Owner
+                                            {t(translations, 'addOwner', language)}
                                         </Button>
 
                                         <Form.ErrorList errors={errors} />
@@ -184,7 +189,7 @@ const CompaniesModal = (props) => {
                     </Col>
 
                     <Col lg={12} xs={24}>
-                        <label className={'mt-2 mb-2 block'}>Phones</label>
+                        <label className={'mt-2 mb-2 block'}>{t(translations, 'phones', language)}</label>
                         <Form.List key="phoneNumbers" name="phoneNumbers">
                             {(listFields, { add, remove }, { errors }) => (
                                 <>
@@ -199,13 +204,36 @@ const CompaniesModal = (props) => {
                                                 margin-bottom: 1rem !important;
                                             `}
                                         >
-                                            <Form.Item validateTrigger={['onChange', 'onBlur']} {...listField} noStyle>
-                                                <Input
-                                                    type='text'
-                                                    className="my-0 mr-2"
-                                                    placeholder="Phone number"
-                                                    style={{ width: 'calc(100% - 30px)' }}
-                                                />
+                                            <Form.Item 
+                                                validateTrigger={['onChange', 'onBlur']} 
+                                                {...listField} 
+                                                noStyle 
+                                                shouldUpdate={(prevValues, currentValues) => {
+                                                    return prevValues.phoneNumbers && currentValues.phoneNumbers &&
+                                                        prevValues.phoneNumbers[index] !== currentValues.phoneNumbers[index];
+                                                }}
+                                            >
+                                                {({ getFieldValue }) => {
+                                                    const phoneNumbers = getFieldValue('phoneNumbers') || [];
+                                                    const currentPhone = phoneNumbers[index];
+                                                    
+                                                    return (
+                                                        <Input
+                                                            type='text'
+                                                            className="my-0 mr-2"
+                                                            placeholder={t(translations, 'phoneNumber', language)}
+                                                            style={{ width: 'calc(100% - 30px)' }}
+                                                            suffix={
+                                                                currentPhone ? (
+                                                                    <PhoneButton 
+                                                                        phoneNumber={currentPhone} 
+                                                                        size="small"
+                                                                    />
+                                                                ) : null
+                                                            }
+                                                        />
+                                                    );
+                                                }}
                                             </Form.Item>
                                             {listFields.length >= 1 ? (
                                                 <MinusCircleOutlined
@@ -218,7 +246,7 @@ const CompaniesModal = (props) => {
 
                                     <Form.Item className={'mb-2'}>
                                         <Button type="dashed" onClick={() => add()} style={{ width: '150px' }} icon={<PlusOutlined />}>
-                                            Add phone
+                                            {t(translations, 'addPhone', language)}
                                         </Button>
 
                                         <Form.ErrorList errors={errors} />
@@ -229,7 +257,7 @@ const CompaniesModal = (props) => {
                     </Col>
 
                     <Col lg={12} xs={24} className='mb-5'>
-                        <label className={'mt-2 mb-2 block'}>Emails</label>
+                        <label className={'mt-2 mb-2 block'}>{t(translations, 'emails', language)}</label>
                         <Form.List key="emails" name="emails">
                             {(listFields, { add, remove }, { errors }) => (
                                 <>
@@ -248,7 +276,7 @@ const CompaniesModal = (props) => {
                                                 <Input
                                                     type='text'
                                                     className="my-0 mr-2"
-                                                    placeholder="Email"
+                                                    placeholder={t(translations, 'email', language)}
                                                     style={{ width: 'calc(100% - 30px)' }}
                                                 />
                                             </Form.Item>
@@ -263,7 +291,7 @@ const CompaniesModal = (props) => {
 
                                     <Form.Item className={'mb-2'}>
                                         <Button type="dashed" onClick={() => add()} style={{ width: '150px' }} icon={<PlusOutlined />}>
-                                            Add email
+                                            {t(translations, 'addEmail', language)}
                                         </Button>
 
                                         <Form.ErrorList errors={errors} />
@@ -275,38 +303,38 @@ const CompaniesModal = (props) => {
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Address"
+                            label={t(translations, 'address', language)}
                             name="address"
                         >
-                            <Input placeholder='Address' />
+                            <Input placeholder={t(translations, 'address', language)} />
                         </Form.Item>
                     </Col>
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Website"
+                            label={t(translations, 'website', language)}
                             name="website"
                         >
-                            <Input placeholder='Website' />
+                            <Input placeholder={t(translations, 'website', language)} />
                         </Form.Item>
                     </Col>
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Credit Score"
+                            label={t(translations, 'creditScore', language)}
                             name="creditScore"
                         >
-                            <Input placeholder='Credit Score' />
+                            <Input placeholder={t(translations, 'creditScore', language)} />
                         </Form.Item>
                     </Col>
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Agents"
+                            label={t(translations, 'agents', language)}
                             name="agentId"
                         >
                             <Select
-                                placeholder="Select an Agent"
+                                placeholder={t(translations, 'selectAgent', language)}
                                 options={makeOptions(agents, 'name')}
                                 loading={agentsLoading}
                                 showSearch
@@ -320,14 +348,14 @@ const CompaniesModal = (props) => {
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Status"
+                            label={t(translations, 'status', language)}
                             name="companyStatus"
                         >
                             <Select
-                                placeholder="Select a Status"
+                                placeholder={t(translations, 'selectStatus', language)}
                                 options={[
-                                    { value: "Active", label: "Active" },
-                                    { value: "Inactive", label: "Inactive" }
+                                    { value: "Active", label: t(translations, 'statusActive', language) },
+                                    { value: "Inactive", label: t(translations, 'statusInactive', language) }
                                 ]}
                                 showSearch
                                 allowClear
@@ -340,14 +368,14 @@ const CompaniesModal = (props) => {
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Is Trusted"
+                            label={t(translations, 'isTrusted', language)}
                             name="isTrusted"
                         >
                             <Select
-                                placeholder="Select"
+                                placeholder={t(translations, 'select', language)}
                                 options={[
-                                    { value: true, label: "Yes" },
-                                    { value: false, label: "No" }
+                                    { value: true, label: t(translations, 'yes', language) },
+                                    { value: false, label: t(translations, 'no', language) }
                                 ]}
                                 showSearch
                                 allowClear
@@ -360,28 +388,28 @@ const CompaniesModal = (props) => {
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Notes"
+                            label={t(translations, 'notes', language)}
                             name="notes"
                         >
-                            <Input.TextArea placeholder='Notes' />
+                            <Input.TextArea placeholder={t(translations, 'notes', language)} />
                         </Form.Item>
                     </Col>
 
                     <Col lg={12} xs={24}>
                         <Form.Item
-                            label="Untrusted Reason"
+                            label={t(translations, 'untrustedReason', language)}
                             name="untrustedReason"
                         >
-                            <Input.TextArea placeholder='Untrusted Reason' />
+                            <Input.TextArea placeholder={t(translations, 'untrustedReason', language)} />
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Row>
                     <Col className='ml-auto'>
-                        <Button className='mr-3' onClick={closeModal}>Cancel</Button>
+                        <Button className='mr-3' onClick={closeModal}>{t(translations, 'cancel', language)}</Button>
                         <Button htmlType='submit' type='primary' loading={submitLoading}>
-                            {editId ? "Update" : "Add"}
+                            {editId ? t(translations, 'update', language) : t(translations, 'add', language)}
                         </Button>
                     </Col>
                 </Row>

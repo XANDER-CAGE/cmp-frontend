@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useLocalStorageState } from 'ahooks';
 import { UserInfoContextProvider } from './contexts/UserInfoContext';
 import AuthContextProvider from './contexts/AuthContext';
+import { RingCentralProvider } from './contexts/RingCentralContext';
 import { LanguageContextProvider } from './contexts/LanguageContext';
 
 // Color palette for light and dark themes
@@ -34,7 +35,6 @@ export const ThemeContext = createContext();
 const App = () => {
   const loginRouters = useRoutes(loginRoutes);
   const [isDarkMode, setIsDarkMode] = useLocalStorageState('theme', false);
-
   const { isAuth } = useSelector(state => state.auth);
 
   useEffect(() => {
@@ -94,7 +94,9 @@ const App = () => {
             {isAuth ? (
               <AuthContextProvider>
                 <UserInfoContextProvider>
-                  <AdminLayout />
+                  <RingCentralProvider>
+                    <AdminLayout />
+                  </RingCentralProvider>
                 </UserInfoContextProvider>
               </AuthContextProvider>
             ) : (

@@ -33,6 +33,8 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@reduxjs/toolkit": "^2.1.0",
+    "@ringcentral/react": "^5.0.4",
+    "@ringcentral/sdk": "^5.0.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -40,14 +42,17 @@
     "antd": "^5.13.3",
     "apexcharts": "^3.49.0",
     "axios": "^1.6.7",
+    "buffer": "^6.0.3",
     "ckeditor5": "^41.1.0",
     "ckeditor5-custom-build": "file:ckeditor5",
     "clsx": "^2.1.0",
+    "crypto-browserify": "^3.12.1",
     "dayjs": "^1.11.10",
     "echarts-for-react": "^3.0.2",
     "js-cookie": "^3.0.5",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
+    "process": "^0.11.10",
     "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
@@ -62,14 +67,15 @@
     "react-toastify": "^10.0.4",
     "react-window": "^1.8.10",
     "redux": "^5.0.1",
+    "stream-browserify": "^3.0.0",
     "styled-components": "^6.1.8",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -91,6 +97,7 @@
     ]
   },
   "devDependencies": {
+    "react-app-rewired": "^2.2.1",
     "tailwindcss": "^3.4.1"
   }
 }

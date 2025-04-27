@@ -1,3 +1,4 @@
+// src/pages/companies/index.js - with RingCentral telephony integration
 import React, { useEffect, useMemo, useState } from 'react';
 import http from '../../utils/axiosInterceptors';
 import { 
@@ -38,6 +39,8 @@ import { useLocalStorageState } from 'ahooks';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { translations } from '../../translations';
 import { t } from '../../utils/transliteration';
+import PhoneButton from '../../components/PhoneButton';
+import RingCentralStatus from '../../components/RingCentralStatus';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -220,16 +223,29 @@ const Companies = () => {
       dataIndex: 'contact',
       key: 'contact',
       render: (_, record) => (
-        <Space direction="vertical" size="small">
+        <Space direction="vertical" size="small" className="w-full">
           {record.email && (
-            <Text type="secondary">
-              <span role="img" aria-label="mail" className="mr-1">✉️</span> {record.email}
-            </Text>
+            <div className="flex items-center justify-between">
+              <Text type="secondary">
+                <span role="img" aria-label="mail" className="mr-1">✉️</span> {record.email}
+              </Text>
+            </div>
           )}
-          {record.phone && (
-            <Text type="secondary">
-              <span role="img" aria-label="phone" className="mr-1">📞</span> {record.phone}
-            </Text>
+          {record.phoneNumbers && record.phoneNumbers.length > 0 && record.phoneNumbers.map((phone, index) => (
+            <div key={index} className="flex items-center justify-between phone-number-display">
+              <Text type="secondary" className="phone-number-text">
+                <span role="img" aria-label="phone" className="mr-1">📞</span> {phone}
+              </Text>
+              <PhoneButton phoneNumber={phone} />
+            </div>
+          ))}
+          {(!record.phoneNumbers || record.phoneNumbers.length === 0) && record.phone && (
+            <div className="flex items-center justify-between phone-number-display">
+              <Text type="secondary" className="phone-number-text">
+                <span role="img" aria-label="phone" className="mr-1">📞</span> {record.phone}
+              </Text>
+              <PhoneButton phoneNumber={record.phone} />
+            </div>
           )}
         </Space>
       ),
@@ -330,7 +346,10 @@ const Companies = () => {
     >
       <Space direction="vertical" size="middle" className="w-full">
         <div className="flex justify-between items-center">
-          <Title level={4} style={{ margin: 0 }}>{t(translations, 'companies', language)}</Title>
+          <div className="flex items-center">
+            <Title level={4} style={{ margin: 0 }}>{t(translations, 'companies', language)}</Title>
+            <RingCentralStatus />
+          </div>
           <Space>
             <Input.Search
               placeholder={t(translations, 'searchCompanies', language)}

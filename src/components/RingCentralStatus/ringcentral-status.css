@@ -1,0 +1,51 @@
+/* src/components/RingCentralStatus/ringcentral-status.css */
+.ringcentral-status {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.ringcentral-badge {
+  display: flex;
+  align-items: center;
+}
+
+.ringcentral-badge .ant-badge-status-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.ringcentral-login-button {
+  background-color: #5711a4 !important;
+  border-color: #5711a4 !important;
+  transition: all 0.3s;
+}
+
+.ringcentral-login-button:hover {
+  background-color: #7019d9 !important;
+  border-color: #7019d9 !important;
+  transform: translateY(-2px);
+}
+
+.ringcentral-logout-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Dark theme support */
+.dark .ringcentral-login-button {
+  background-color: #7019d9 !important;
+  border-color: #7019d9 !important;
+}
+
+.dark .ringcentral-login-button:hover {
+  background-color: #8838e1 !important;
+  border-color: #8838e1 !important;
+}
+
+.dark .ringcentral-badge {
+  color: #cbd5e1;
+}
+
+.light .ringcentral-badge {
+  color: #64748b;
+}
