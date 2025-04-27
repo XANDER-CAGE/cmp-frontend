@@ -13,13 +13,13 @@ import './phone-button.css';
 const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) => {
   const { language } = useLanguage();
   const { authenticated, loading, callLoading, login, logout, call } = useRingCentral();
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [callModalVisible, setCallModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   const handleCall = async (phoneNum = phoneNumber) => {
     if (!authenticated) {
-      setLoginModalVisible(true);
+      // Если не авторизован, запускаем процесс авторизации
+      login();
       return;
     }
 
@@ -31,7 +31,7 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
     try {
       await call(phoneNum);
     } catch (error) {
-      console.error('Call error:', error);
+      console.error('Ошибка вызова:', error);
     }
   };
 
@@ -39,20 +39,6 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
     if (phoneNumber) {
       navigator.clipboard.writeText(phoneNumber);
       toast.success(t(translations, 'ringcentralNumberCopied', language));
-    }
-  };
-
-  const handleLogin = async (values) => {
-    const success = await login(values.username, values.password, values.extension);
-    if (success) {
-      setLoginModalVisible(false);
-      
-      // If we were trying to call a number, do it now
-      if (phoneNumber) {
-        await handleCall(phoneNumber);
-      } else {
-        setCallModalVisible(true);
-      }
     }
   };
 
@@ -106,7 +92,7 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
           </Tooltip>
         )}
         
-        {authenticated ? (
+        {authenticated && (
           <Tooltip title={t(translations, 'ringcentralDisconnect', language)}>
             <Button
               size={size}
@@ -117,83 +103,20 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
               className="phone-logout-button"
             />
           </Tooltip>
-        ) : (
+        )}
+        
+        {!authenticated && (
           <Tooltip title={t(translations, 'ringcentralLogin', language)}>
             <Button
               size={size}
               icon={<LoginOutlined />}
-              onClick={() => setLoginModalVisible(true)}
+              onClick={login}
               loading={loading}
               className="phone-login-button"
             />
           </Tooltip>
         )}
       </Space>
-
-      {/* Login Modal */}
-      <Modal
-        title={t(translations, 'ringcentralLogin', language)}
-        open={loginModalVisible}
-        onCancel={() => setLoginModalVisible(false)}
-        footer={null}
-        destroyOnClose
-        maskClosable={!loading}
-        closable={!loading}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleLogin}
-          preserve={false}
-        >
-          <Form.Item
-            name="username"
-            label={t(translations, 'ringcentralUsername', language)}
-            rules={[{ 
-              required: true, 
-              message: t(translations, 'ringcentralUsernameRequired', language) 
-            }]}
-          >
-            <Input 
-              placeholder={t(translations, 'ringcentralUsername', language)} 
-              disabled={loading}
-              autoComplete="off"
-            />
-          </Form.Item>
-          
-          <Form.Item
-            name="password"
-            label={t(translations, 'ringcentralPassword', language)}
-            rules={[{ 
-              required: true, 
-              message: t(translations, 'ringcentralPasswordRequired', language) 
-            }]}
-          >
-            <Input.Password 
-              placeholder={t(translations, 'ringcentralPassword', language)} 
-              disabled={loading}
-              autoComplete="new-password"
-            />
-          </Form.Item>
-          
-          <Form.Item
-            name="extension"
-            label={t(translations, 'ringcentralExtension', language)}
-          >
-            <Input 
-              placeholder={t(translations, 'ringcentralExtension', language)} 
-              disabled={loading}
-              autoComplete="off"
-            />
-          </Form.Item>
-          
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
-              {t(translations, 'ringcentralLogin', language)}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
 
       {/* Call Modal */}
       <Modal

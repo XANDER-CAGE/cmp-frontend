@@ -2,74 +2,67 @@
 import SDK from '@ringcentral/sdk';
 import Cookies from 'js-cookie';
 
-// Configuration
+// Конфигурация
 const ringcentralConfig = {
     server: 'https://platform.ringcentral.com',
-    clientId: '7jgRD9OXm6ldHaZSVo06Qd',
-    clientSecret: '1SRjZSbrq2kcrOSXXA0Jyr2ksZ4VZtyU6eTO6e0qnUps',
+    clientId: '7qqd7KHvEcIdmAVmrkQoys', // Ваш Client ID
     redirectUri: `${window.location.origin}/oauth-callback`,
-    cachePrefix: 'rc-sdk-'
+    appName: 'CityFuel Management',
+    appVersion: '1.0.0'
 };
 
-// Create SDK instance
+// Создаем экземпляр SDK
 export const sdk = new SDK({
     server: ringcentralConfig.server,
     clientId: ringcentralConfig.clientId,
-    clientSecret: ringcentralConfig.clientSecret,
     redirectUri: ringcentralConfig.redirectUri,
-    cachePrefix: ringcentralConfig.cachePrefix,
-    appName: 'CityFuel Management',
-    appVersion: '1.0.0'
+    appName: ringcentralConfig.appName,
+    appVersion: ringcentralConfig.appVersion
 });
 
-// Platform instance
+// Платформенный экземпляр
 const platform = sdk.platform();
 
-// Check authentication status
+// Проверка статуса аутентификации
 export const isAuthenticated = () => {
     try {
         return platform.auth().accessTokenValid();
     } catch (e) {
-        console.error('Error checking authentication status:', e);
+        console.error('Ошибка проверки статуса аутентификации:', e);
         return false;
     }
 };
 
-// Make a call using RingOut API
-export const makeCall = async (phoneNumber) => {
+// Получить URL для авторизации с PKCE
+export const getLoginUrl = (state = '') => {
+    return platform.loginUrl({
+        state,
+        usePKCE: true
+    });
+};
+
+// Обработать перенаправление авторизации
+export const handleAuthRedirect = async () => {
     try {
-        if (!isAuthenticated()) {
-            throw new Error('Not authenticated with RingCentral');
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        
+        if (!code) {
+            throw new Error('Код авторизации не найден в URL');
         }
         
-        // Get user's extension info to find their direct number
-        const extensionResponse = await platform.get('/restapi/v1.0/account/~/extension/~');
-        const extension = await extensionResponse.json();
+        // Логин с использованием кода авторизации
+        await platform.login({ code });
         
-        // Find user's direct phone number or any available number
-        const userPhoneNumber = extension.contact?.phoneNumbers?.find(p => p.type === 'Direct')?.phoneNumber ||
-                                extension.contact?.phoneNumbers?.[0]?.phoneNumber;
-        
-        if (!userPhoneNumber) {
-            throw new Error('Could not find your phone number in RingCentral account');
-        }
-        
-        // Make the call using RingOut
-        const response = await platform.post('/restapi/v1.0/account/~/extension/~/ring-out', {
-            from: { phoneNumber: userPhoneNumber },
-            to: { phoneNumber },
-            playPrompt: true,
-            callerId: { phoneNumber: userPhoneNumber }
-        });
-        
-        return await response.json();
+        // Возвращаем данные авторизации
+        return platform.auth().data();
     } catch (error) {
-        console.error('RingCentral call error:', error);
+        console.error('Ошибка обработки авторизации:', error);
         throw error;
     }
 };
 
-// Helper to restore authentication from cookies
+// Обновление токена из cookies
 export const restoreAuthFromCookies = async () => {
     try {
         const accessToken = Cookies.get('rc_access_token');
@@ -83,32 +76,51 @@ export const restoreAuthFromCookies = async () => {
             });
             
             try {
-                // Attempt to refresh the token
+                // Пытаемся обновить токен
                 await platform.refresh();
                 return true;
             } catch (e) {
-                console.error('Failed to refresh token:', e);
+                console.error('Не удалось обновить токен:', e);
                 return false;
             }
         }
         return false;
     } catch (e) {
-        console.error('Error restoring auth from cookies:', e);
+        console.error('Ошибка восстановления аутентификации из cookies:', e);
         return false;
     }
 };
 
-// OAuth redirect URI handler - for browser-based OAuth flow (if needed)
-export const handleAuthRedirect = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    
-    if (code) {
-        return platform.login({
-            code,
-            redirectUri: ringcentralConfig.redirectUri
+// Совершение звонка
+export const makeCall = async (phoneNumber) => {
+    try {
+        if (!isAuthenticated()) {
+            throw new Error('Не авторизован в RingCentral');
+        }
+        
+        // Получаем информацию о внутреннем номере пользователя
+        const extensionResponse = await platform.get('/restapi/v1.0/account/~/extension/~');
+        const extension = await extensionResponse.json();
+        
+        // Находим прямой номер телефона пользователя или любой доступный номер
+        const userPhoneNumber = extension.contact?.phoneNumbers?.find(p => p.type === 'Direct')?.phoneNumber ||
+                               extension.contact?.phoneNumbers?.[0]?.phoneNumber;
+        
+        if (!userPhoneNumber) {
+            throw new Error('Не удалось найти ваш номер телефона в аккаунте RingCentral');
+        }
+        
+        // Совершаем вызов с использованием RingOut
+        const response = await platform.post('/restapi/v1.0/account/~/extension/~/ring-out', {
+            from: { phoneNumber: userPhoneNumber },
+            to: { phoneNumber },
+            playPrompt: true,
+            callerId: { phoneNumber: userPhoneNumber }
         });
+        
+        return await response.json();
+    } catch (error) {
+        console.error('Ошибка вызова RingCentral:', error);
+        throw error;
     }
-    
-    return Promise.reject(new Error('No authorization code found in URL'));
 };

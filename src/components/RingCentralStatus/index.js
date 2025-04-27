@@ -1,7 +1,7 @@
 // src/components/RingCentralStatus/index.js
-import React, { useState } from 'react';
-import { Button, Modal, Form, Input, Badge, Tooltip, Space } from 'antd';
-import { PhoneOutlined, LoginOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Button, Badge, Tooltip, Space } from 'antd';
+import { LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useRingCentral } from '../../contexts/RingCentralContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { translations } from '../../translations';
@@ -11,15 +11,6 @@ import './ringcentral-status.css';
 const RingCentralStatus = () => {
   const { language } = useLanguage();
   const { authenticated, loading, userExtension, login, logout } = useRingCentral();
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [form] = Form.useForm();
-
-  const handleLogin = async (values) => {
-    const success = await login(values.username, values.password, values.extension);
-    if (success) {
-      setLoginModalVisible(false);
-    }
-  };
 
   // Get display name from user extension
   const getDisplayName = () => {
@@ -63,7 +54,7 @@ const RingCentralStatus = () => {
         ) : (
           <Button 
             icon={<LoginOutlined />} 
-            onClick={() => setLoginModalVisible(true)} 
+            onClick={login} 
             loading={loading}
             type="primary"
             size="small"
@@ -73,72 +64,6 @@ const RingCentralStatus = () => {
           </Button>
         )}
       </Space>
-
-      {/* Login Modal */}
-      <Modal
-        title={t(translations, 'ringcentralConnect', language)}
-        open={loginModalVisible}
-        onCancel={() => setLoginModalVisible(false)}
-        footer={null}
-        destroyOnClose
-        maskClosable={!loading}
-        closable={!loading}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleLogin}
-          preserve={false}
-        >
-          <Form.Item
-            name="username"
-            label={t(translations, 'ringcentralUsername', language)}
-            rules={[{ 
-              required: true, 
-              message: t(translations, 'ringcentralUsernameRequired', language) 
-            }]}
-          >
-            <Input 
-              prefix={<UserOutlined />} 
-              placeholder={t(translations, 'ringcentralUsername', language)} 
-              disabled={loading}
-              autoComplete="off"
-            />
-          </Form.Item>
-          
-          <Form.Item
-            name="password"
-            label={t(translations, 'ringcentralPassword', language)}
-            rules={[{ 
-              required: true, 
-              message: t(translations, 'ringcentralPasswordRequired', language) 
-            }]}
-          >
-            <Input.Password 
-              placeholder={t(translations, 'ringcentralPassword', language)} 
-              disabled={loading}
-              autoComplete="new-password"
-            />
-          </Form.Item>
-          
-          <Form.Item
-            name="extension"
-            label={t(translations, 'ringcentralExtension', language)}
-          >
-            <Input 
-              placeholder={t(translations, 'ringcentralExtension', language)} 
-              disabled={loading}
-              autoComplete="off"
-            />
-          </Form.Item>
-          
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
-              {t(translations, 'ringcentralConnect', language)}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };
