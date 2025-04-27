@@ -10,7 +10,7 @@ import './ringcentral-status.css';
 
 const RingCentralStatus = () => {
   const { language } = useLanguage();
-  const { authenticated, loading, login, logout } = useRingCentral();
+  const { authenticated, loading, userExtension, login, logout } = useRingCentral();
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [form] = Form.useForm();
 
@@ -21,17 +21,28 @@ const RingCentralStatus = () => {
     }
   };
 
+  // Get display name from user extension
+  const getDisplayName = () => {
+    if (!userExtension) return '';
+    
+    if (userExtension.contact && userExtension.contact.firstName) {
+      return `${userExtension.contact.firstName} ${userExtension.contact.lastName || ''}`.trim();
+    }
+    
+    return userExtension.name || userExtension.extensionNumber || '';
+  };
+
   return (
     <div className="ringcentral-status">
-      <Space>
+      <Space size="small">
         <Tooltip title={authenticated 
-          ? t(translations, 'ringcentralConnected', language) 
+          ? `${t(translations, 'ringcentralConnected', language)}${getDisplayName() ? `: ${getDisplayName()}` : ''}`
           : t(translations, 'ringcentralConnect', language)
         }>
           <Badge 
             status={authenticated ? "success" : "error"} 
             text={authenticated 
-              ? t(translations, 'ringcentralConnected', language) 
+              ? t(translations, 'ringcentralConnected', language)
               : t(translations, 'ringcentralDisconnected', language)
             } 
             className="ringcentral-badge"
@@ -70,12 +81,14 @@ const RingCentralStatus = () => {
         onCancel={() => setLoginModalVisible(false)}
         footer={null}
         destroyOnClose
+        maskClosable={!loading}
+        closable={!loading}
       >
         <Form
           form={form}
           layout="vertical"
           onFinish={handleLogin}
-          preserveValues={false}
+          preserve={false}
         >
           <Form.Item
             name="username"
@@ -88,6 +101,8 @@ const RingCentralStatus = () => {
             <Input 
               prefix={<UserOutlined />} 
               placeholder={t(translations, 'ringcentralUsername', language)} 
+              disabled={loading}
+              autoComplete="off"
             />
           </Form.Item>
           
@@ -101,6 +116,8 @@ const RingCentralStatus = () => {
           >
             <Input.Password 
               placeholder={t(translations, 'ringcentralPassword', language)} 
+              disabled={loading}
+              autoComplete="new-password"
             />
           </Form.Item>
           
@@ -110,6 +127,8 @@ const RingCentralStatus = () => {
           >
             <Input 
               placeholder={t(translations, 'ringcentralExtension', language)} 
+              disabled={loading}
+              autoComplete="off"
             />
           </Form.Item>
           

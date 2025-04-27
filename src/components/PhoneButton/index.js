@@ -12,10 +12,9 @@ import './phone-button.css';
 
 const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) => {
   const { language } = useLanguage();
-  const { authenticated, loading, login, logout, call } = useRingCentral();
+  const { authenticated, loading, callLoading, login, logout, call } = useRingCentral();
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [callModalVisible, setCallModalVisible] = useState(false);
-  const [callLoading, setCallLoading] = useState(false);
   const [form] = Form.useForm();
 
   const handleCall = async (phoneNum = phoneNumber) => {
@@ -29,11 +28,10 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
       return;
     }
 
-    setCallLoading(true);
     try {
       await call(phoneNum);
-    } finally {
-      setCallLoading(false);
+    } catch (error) {
+      console.error('Call error:', error);
     }
   };
 
@@ -62,6 +60,23 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
   const handleCallFormSubmit = async (values) => {
     await handleCall(values.phoneNumber);
     setCallModalVisible(false);
+  };
+
+  // Format phone number for display
+  const formatPhoneNumber = (number) => {
+    if (!number) return '';
+    
+    // Simple formatting for display
+    const cleaned = number.replace(/\D/g, '');
+    
+    // Format based on length
+    if (cleaned.length === 10) {
+      return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+    } else if (cleaned.length === 11 && cleaned.startsWith('1')) {
+      return `+1 (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7)}`;
+    }
+    
+    return number; // Return original if no formatting applied
   };
 
   return (
@@ -122,12 +137,14 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
         onCancel={() => setLoginModalVisible(false)}
         footer={null}
         destroyOnClose
+        maskClosable={!loading}
+        closable={!loading}
       >
         <Form
           form={form}
           layout="vertical"
           onFinish={handleLogin}
-          preserveValues={false}
+          preserve={false}
         >
           <Form.Item
             name="username"
@@ -137,7 +154,11 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
               message: t(translations, 'ringcentralUsernameRequired', language) 
             }]}
           >
-            <Input placeholder={t(translations, 'ringcentralUsername', language)} />
+            <Input 
+              placeholder={t(translations, 'ringcentralUsername', language)} 
+              disabled={loading}
+              autoComplete="off"
+            />
           </Form.Item>
           
           <Form.Item
@@ -148,14 +169,22 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
               message: t(translations, 'ringcentralPasswordRequired', language) 
             }]}
           >
-            <Input.Password placeholder={t(translations, 'ringcentralPassword', language)} />
+            <Input.Password 
+              placeholder={t(translations, 'ringcentralPassword', language)} 
+              disabled={loading}
+              autoComplete="new-password"
+            />
           </Form.Item>
           
           <Form.Item
             name="extension"
             label={t(translations, 'ringcentralExtension', language)}
           >
-            <Input placeholder={t(translations, 'ringcentralExtension', language)} />
+            <Input 
+              placeholder={t(translations, 'ringcentralExtension', language)} 
+              disabled={loading}
+              autoComplete="off"
+            />
           </Form.Item>
           
           <Form.Item>
@@ -173,11 +202,13 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
         onCancel={() => setCallModalVisible(false)}
         footer={null}
         destroyOnClose
+        maskClosable={!callLoading}
+        closable={!callLoading}
       >
         <Form
           layout="vertical"
           onFinish={handleCallFormSubmit}
-          initialValues={{ phoneNumber: phoneNumber || '' }}
+          initialValues={{ phoneNumber: phoneNumber ? formatPhoneNumber(phoneNumber) : '' }}
         >
           <Form.Item
             name="phoneNumber"
@@ -187,7 +218,11 @@ const PhoneButton = ({ phoneNumber, size = 'small', containerClassName = '' }) =
               message: t(translations, 'ringcentralPhoneNumberRequired', language) 
             }]}
           >
-            <Input placeholder={t(translations, 'ringcentralEnterNumber', language)} />
+            <Input 
+              placeholder={t(translations, 'ringcentralEnterNumber', language)} 
+              disabled={callLoading}
+              autoComplete="off"
+            />
           </Form.Item>
           
           <Form.Item>
